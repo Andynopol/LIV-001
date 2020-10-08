@@ -1,0 +1,123 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Roboto, "Segoe UI", Arial, sans-serif;
+    font-size: 16px;
+    color: white;
+    user-select: none;
+}
+
+#container {
+    width: 640px;
+    height: 360px;
+    background: url('bubbles.png?20200505_080445');
+    position: relative;
+    overflow: hidden;
+}
+
+#message {
+    position: absolute;
+    width: 350px;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    color: #000;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.buttons {}
+
+.row {
+    margin-top: 10px;
+    padding-left: 8px;
+
+    display: flex;
+    align-items: center;
+}
+
+button {
+    width: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    border: solid 1px white;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 8px;
+    outline: none;
+    transition-property: background, color;
+    transition-duration: 200ms;
+    margin-right: 4px;
+    display: inline-block;
+
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+button:active {
+    background: rgba(255, 255, 255, 1);
+    color: #081d5c;
+}
+
+#errorBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 8px;
+    line-height: 32px;
+    background: rgba(255, 0, 0, 0.5);
+    color: white;
+    transition: transform 200ms;
+    transform: translateY(100%);
+}
+
+#errorBar.up {
+    transform: translateY(0);
+}
+
+.container {
+    display: block;
+}
+
+.positioner {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    border: solid 1px white;
+    border-radius: 4px;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    transition-duration: 200ms;
+}
+
+.positioner:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.positioner:active {
+    background: rgba(255, 255, 255, 1);
+    color: #081d5c;
+}
+
+input {
+    margin: 0 10px;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border: 1px solid #000;
+}
+
+.cell+.cell {
+    border-left: none;
+}
