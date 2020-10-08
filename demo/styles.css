@@ -1,123 +1,168 @@
 html,
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Roboto, "Segoe UI", Arial, sans-serif;
-    font-size: 16px;
-    color: white;
-    user-select: none;
+	margin: 0;
+	padding: 0;
+	font-family: Roboto, "Segoe UI", Arial, sans-serif;
+	font-size: 16px;
+	color: white;
+	user-select: none;
 }
 
 #container {
-    width: 640px;
-    height: 360px;
-    background: url('bubbles.png?20200505_080445');
-    position: relative;
-    overflow: hidden;
+	padding-top: 10px;
+	width: 640px;
+	height: 360px;
+	background: url("bubbles.png?20200505_080445");
+	background-repeat: no-repeat;
+	position: relative;
+	overflow: hidden;
 }
 
 #message {
-    position: absolute;
-    width: 350px;
-    top: 10px;
-    right: 10px;
-    padding: 10px;
-    color: #000;
-    background: rgba(255, 255, 255, 0.8);
+	position: absolute;
+	width: 350px;
+	top: 10px;
+	right: 10px;
+	padding: 10px;
+	color: #000;
+	background: rgba(255, 255, 255, 0.8);
 }
 
-.buttons {}
+.buttons {
+}
 
 .row {
-    margin-top: 10px;
-    padding-left: 8px;
+	padding-left: 8px;
 
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 button {
-    width: 120px;
-    background: rgba(255, 255, 255, 0.1);
-    border: solid 1px white;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-    padding: 8px;
-    outline: none;
-    transition-property: background, color;
-    transition-duration: 200ms;
-    margin-right: 4px;
-    display: inline-block;
-
+	width: 50px;
+	background: rgba(255, 255, 255, 0.1);
+	border: solid 1px white;
+	border-radius: 4px;
+	color: white;
+	cursor: pointer;
+	font-family: inherit;
+	font-size: inherit;
+	padding: 8px;
+	outline: none;
+	transition-property: background, color;
+	transition-duration: 200ms;
+	margin-right: 4px;
+	display: inline-block;
 }
 
 button:hover {
-    background: rgba(255, 255, 255, 0.2);
+	background: rgba(255, 255, 255, 0.2);
 }
 
 button:active {
-    background: rgba(255, 255, 255, 1);
-    color: #081d5c;
+	background: rgba(255, 255, 255, 1);
+	color: #081d5c;
 }
 
 #errorBar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0 8px;
-    line-height: 32px;
-    background: rgba(255, 0, 0, 0.5);
-    color: white;
-    transition: transform 200ms;
-    transform: translateY(100%);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 0 8px;
+	line-height: 32px;
+	background: rgba(255, 0, 0, 0.5);
+	color: white;
+	transition: transform 200ms;
+	transform: translateY(100%);
 }
 
 #errorBar.up {
-    transform: translateY(0);
+	transform: translateY(0);
 }
 
 .container {
-    display: block;
+	display: block;
 }
 
 .positioner {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    outline: none;
-    border: solid 1px white;
-    border-radius: 4px;
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    transition-duration: 200ms;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	outline: none;
+	border: solid 1px white;
+	border-radius: 4px;
+	color: white;
+	background: rgba(255, 255, 255, 0.1);
+	transition-duration: 200ms;
+	user-select: none;
 }
 
 .positioner:hover {
-    background: rgba(255, 255, 255, 0.2);
+	background: rgba(255, 255, 255, 0.2);
 }
 
 .positioner:active {
-    background: rgba(255, 255, 255, 1);
-    color: #081d5c;
+	background: rgba(255, 255, 255, 1);
+	color: #081d5c;
 }
 
-input {
-    margin: 0 10px;
+.line {
+	display: flex;
+	margin: 0 10px;
 }
 
 .cell {
-    width: 50px;
-    height: 50px;
-    background-color: white;
-    border: 1px solid #000;
+	width: 30px;
+	height: 30px;
+	background-color: white;
+	border: 1px solid #000;
+	/* display: flex;
+	justify-content: center;
+    align-items: center; */
+	position: relative;
 }
 
-.cell+.cell {
-    border-left: none;
+.cell + .cell {
+	border-left: none;
+}
+
+.cell.empty {
+	visibility: hidden;
+	user-select: none;
+}
+
+.disabled {
+	opacity: 0.4;
+	pointer-events: none;
+}
+
+.invisible {
+	visibility: hidden;
+	opacity: 0;
+	pointer-events: none;
+}
+
+input {
+	all: initial;
+}
+
+input.letter {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	text-transform: uppercase;
+	word-break: normal !important;
+}
+
+#controls {
+	position: absolute;
+	bottom: 30px;
+	left: 10px;
+}
+
+#start {
+	width: 100px;
 }

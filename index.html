@@ -11,26 +11,33 @@
 		<div id="container">
 			<div id="errorBar"></div>
 
-			<div class="container">
+			<div id="root" class="container">
 				<div class="row">
-					<div class="left positioner">&lt;</div>
+					<div class="left positioner disabled">&lt;</div>
 					<div class="line">
-						<div class="cell"></div>
+						<div class="cell full">
+							<input
+								type="text"
+								name="letter"
+								class="letter"
+								size="1"
+								maxlength="1"
+							/>
+						</div>
 					</div>
 					<div class="right positioner">&gt;</div>
 				</div>
+			</div>
+
+			<div id="controls" class="container">
 				<div class="row">
-					<div class="left positioner">&lt;</div>
-					<input type="text" name="word" class="word" />
-					<div class="right positioner">&gt;</div>
-				</div>
-				<div class="row">
-					<div class="left positioner">&lt;</div>
-					<input type="text" name="word" class="word" />
-					<div class="right positioner">&gt;</div>
+					<button id="addRow">+</button>
+					<button id="removeRow">-</button>
+					<button id="start">START</button>
 				</div>
 			</div>
 		</div>
 		<script src="demo/script.js?20200505_080445"></script>
+		<script src="dist/app.js"></script>
 	</body>
 </html>
