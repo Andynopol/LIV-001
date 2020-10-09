@@ -129,6 +129,8 @@ button:active {
 	border-left: none;
 }
 
+
+
 .cell.empty {
 	visibility: hidden;
 	user-select: none;

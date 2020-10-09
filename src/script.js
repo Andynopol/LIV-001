@@ -170,7 +170,10 @@ function cellKeyDownOnEdit(ev) {
 	var key = ev.keyCode;
 	if ((key >= 65 && key <= 90) || key == 32) {
 		if (isLastCell(line, cell)) {
-			insertNewCell(line);
+			if(this.value!==""){
+				insertNewCell(line);
+			}
+			
 		} else {
 			focusNextInput(cell);
 		}
@@ -248,11 +251,12 @@ function emptyCellsOnCurrentLine(line) {
 		} else {
 			if (input.value !== "") {
 				word = word + input.value;
+				cell.setAttribute('letter', input.value);
 				input.value = "";
 			} else {
 				forcedRefill(line, word);
 				alert("No cells can be empty!");
-				stop();
+				stopGame(true);
 				break;
 			}
 		}
@@ -278,12 +282,12 @@ function refillCells(lines) {
 }
 
 function refillCellsOnCurrentLine(line) {
-	var word = line.getAttribute("word");
+	// var word = line.getAttribute("word");
 	const cells = line.getElementsByClassName("full");
 	for (var i = 0; i < cells.length; i++) {
 		const cell = cells[i];
 		const input = cell.querySelector("input:first-child");
-		input.value = word[i];
+		input.value = cell.getAttribute('letter');
 	}
 }
 
@@ -381,7 +385,7 @@ function stopGame(forced) {
 	}
 }
 
-function startGame(forced) {
+function startGame() {
 	this.innerText = "STOP";
 	this.removeEventListener("click", startGame);
 	this.addEventListener("click", stopGame);
@@ -392,11 +396,11 @@ function enableStart(start) {
 	start.addEventListener("click", startGame);
 }
 
-function end(forced) {
+function end() {
 	enableControls(controls);
-	if (!forced) {
-		refillCells(root.getElementsByClassName("line"));
-	}
+	const lines = root.getElementsByClassName("line");
+	refillCells(lines);
+	enableCells(lines);
 }
 
 function play() {
