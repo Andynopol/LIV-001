@@ -119,15 +119,25 @@ button:active {
 	margin: 0 10px;
 }
 
-.cell {
+.blank {
 	width: 30px;
 	height: 30px;
 	background-color: white;
 	border: 1px solid #000;
-	/* display: flex;
-	justify-content: center;
-    align-items: center; */
 	position: relative;
+	visibility: hidden;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.cell{
+	visibility: visible;
+	opacity: 1;
+	pointer-events: all;
+}
+
+.blank+.blank{
+	border-left: none;
 }
 
 .cell + .cell {
