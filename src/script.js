@@ -101,12 +101,21 @@ class Rebus{
 		}
 	}
 
-	isLastCell(line, cell) {
-		const lastCell = line.querySelector(".full:last-child");
+	isLastCell(row, cell) {
+		const lastCell = row.querySelector(".full:last-child");
 		if (lastCell === cell) {
 			return true;
 		}
 		return false;
+	}
+
+	focusNextInput(cell) {
+		const row = cell.parentElement;
+		const cells = [...row.getElementsByClassName("full")];
+		const nextCellInput = cells[cells.indexOf(cell) + 1].querySelector(
+			".letter:first-child",
+		);
+		nextCellInput.focus();
 	}
 
 	enableCells(){
@@ -133,12 +142,22 @@ class Rebus{
 	enableInput(input){
 		const that = this;
 		input.addEventListener("keydown", function(){
-			
+			const cell = this.parentElement;
+			const row = cell.parentElement;
+			var key = ev.keyCode;
+			if ((key >= 65 && key <= 90) || key == 32) {
+				if(that.isLastCell(row, cell)){
+					
+				}
+				else{
+					that.focusNextInput(cell);
+				}
+			}
 		});
 		input.addEventListener("keyup", function(){
 			const currentValue = this.value;
 			const cell = this.parentElement;
-			const line = cell.parentElement;
+			const row = cell.parentElement;
 
 			if (ev.keyCode === 13) { //ENTER
 				ev.preventDefault();
