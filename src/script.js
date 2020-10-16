@@ -119,7 +119,8 @@ class Rebus{
 	}
 
 	enableInput(input){
-		input.addEventListener('');
+		input.addEventListener("keydown", cellKeyUp);
+		input.addEventListener("keyup", cellKeyDown);
 	}
 }
 
