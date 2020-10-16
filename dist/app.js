@@ -9,6 +9,8 @@ const add = document.getElementById("addRow");
 const remove = document.getElementById("removeRow");
 const controls = document.getElementById("controls");
 const start = document.getElementById("start");
+const verify = document.getElementById("verify");
+verify.classList.add('disabled');
 
 // <-- DEFAULT FUNCTIONS -->
 
@@ -110,8 +112,11 @@ function focusNextInput(cell) {
 function deleteLastCell(line) {
 	const cells = [...line.getElementsByClassName("cell")];
 	console.log(cells);
-	cells.pop();
-	injectInLine(line, cells);
+	if(cells.length>1)
+	{
+		cells.pop();
+		injectInLine(line, cells);
+	}
 }
 
 function isLastCell(line, cell) {
@@ -283,8 +288,8 @@ function refillCells(lines) {
 }
 
 function refillCellsOnCurrentLine(line) {
-	// var word = line.getAttribute("word");
 	const cells = line.getElementsByClassName("full");
+	line.classList.remove('correct', 'incorrect');
 	for (var i = 0; i < cells.length; i++) {
 		const cell = cells[i];
 		const input = cell.querySelector("input:first-child");
@@ -292,9 +297,52 @@ function refillCellsOnCurrentLine(line) {
 	}
 }
 
+
+
+function verifyLines(lines){
+	for(var line of lines){
+		verifyCells(line);
+	}
+}
+
+function verifyCells(line){
+	const cells = line.getElementsByClassName('full');
+	var correct = 0;
+	for(var cell of cells){
+		if(verifyCell(cell)){
+			correct++;
+		}
+	}
+	if(correct === cells.length)
+	{
+		line.classList.add('correct');
+	}
+	else{
+		line.classList.add('incorrect');
+	}
+}
+
+function verifyCell(cell){
+	const input = cell.getElementsByTagName("input")[0];
+	if(input.value === cell.getAttribute('letter')){
+		return true;
+	}
+	return false;
+}
+
 // ? <-- SECONDARY FUNCTIONS -->
 
 // ! <-- Main functions -->
+
+
+function solve(){
+	const lines = document.getElementsByClassName('line');
+	verifyLines(lines);
+}
+
+function linkVerify(verify){
+	verify.addEventListener('click', solve);
+}
 
 function enableCells(lines) {
 	for (var i = 0; i < lines.length; i++) {
@@ -335,6 +383,11 @@ function enableAddRemove(add, remove) {
 		left.innerText = "<";
 		row.appendChild(left);
 
+		//right
+		right.classList.add("right", "positioner");
+		right.innerText = ">";
+		row.appendChild(right);
+
 		//line
 		line.classList.add("line");
 		row.appendChild(line);
@@ -350,10 +403,7 @@ function enableAddRemove(add, remove) {
 		input.maxlength = 1;
 		cell.appendChild(input);
 
-		//right
-		right.classList.add("right", "positioner");
-		right.innerText = ">";
-		row.appendChild(right);
+		
 
 		//add to root
 		row.classList.add("row");
@@ -402,12 +452,14 @@ function end() {
 	const lines = root.getElementsByClassName("line");
 	refillCells(lines);
 	enableCells(lines);
+	verify.classList.add('disabled');
 }
 
-function play() {
+function play() {	
 	disableControls(controls);
 	emptyCells(root.getElementsByClassName("line"));
 	disableCells();
+	verify.classList.remove('disabled');
 }
 
 // ! <-- MAIN FUNCTIONS -->
@@ -416,5 +468,6 @@ enablePositioners(positioners);
 enableCells(lines);
 enableAddRemove(add, remove);
 enableStart(start);
+linkVerify(verify);
 
 },{}]},{},[1]);

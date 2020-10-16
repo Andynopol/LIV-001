@@ -102,11 +102,16 @@ button:active {
 
 .positioner:hover {
 	background: rgba(255, 255, 255, 0.2);
+	cursor: pointer;
 }
 
 .positioner:active {
 	background: rgba(255, 255, 255, 1);
 	color: #081d5c;
+}
+
+.positioner+.positioner{
+	margin-left: 10px;
 }
 
 .line {
@@ -165,6 +170,14 @@ input.letter {
 	left: 10px;
 }
 
-#start {
+.wider {
 	width: 100px;
+}
+
+.line.correct>.full{
+	background-color: green;
+}
+
+.line.incorrect>.full{
+	background-color: red;
 }
