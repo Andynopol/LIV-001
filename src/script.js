@@ -120,8 +120,16 @@ class Rebus{
 	}
 
 	isLastCell(row, cell) {
-		const lastCell = row.querySelector(".full:last-child");
+		const lastCell = row.querySelector(".cell:last-child");
 		if (lastCell === cell) {
+			return true;
+		}
+		return false;
+	}
+
+	isFirstCell(row, cell){
+		const firstCell = row.getElementsByClassName("cell")[0];
+		if (firstCell === cell) {
 			return true;
 		}
 		return false;
@@ -139,10 +147,10 @@ class Rebus{
 	focusPrevInput(cell){
 		const row = cell.parentElement;
 		const cells = [...row.getElementsByClassName("cell")];
-		const nextCellInput = cells[cells.indexOf(cell) - 1].querySelector(
+		const prevCellInput = cells[cells.indexOf(cell) - 1].querySelector(
 			".letter:first-child",
 		);
-		nextCellInput.focus();
+		prevCellInput.focus();
 	}
 
 	enableCells(){
@@ -169,10 +177,14 @@ class Rebus{
 	enableInput(input){
 		const that = this;
 		input.addEventListener("keydown", function(ev){
-			const currentValue = this.value;
+			// const currentValue = this.value;
 			const cell = this.parentElement;
 			const row = cell.parentElement;
 			var key = ev.keyCode;
+
+			if ((key >= 65 && key <= 90) || key == 32) {
+				this.value = '';
+			}
 
 			if (ev.keyCode === 13) {
 				ev.preventDefault();
@@ -180,9 +192,15 @@ class Rebus{
 			}
 		
 			if (ev.keyCode === 8) {
-				this.blur();
-				that.focusPrevInput(cell);
-
+				ev.preventDefault();
+				this.value = "";
+				console.log(that.isFirstCell(row, cell));
+				if(that.isFirstCell(row, cell))
+				{
+					console.log("CEVA");
+				}else{
+					that.focusPrevInput(cell);
+				}	
 			}
 		});
 		input.addEventListener("keyup", function(ev){
@@ -191,7 +209,6 @@ class Rebus{
 			const row = cell.parentElement;
 			var key = ev.keyCode;
 			if ((key >= 65 && key <= 90) || key == 32) {
-				
 				if(that.isLastCell(row, cell)){
 					
 				}
