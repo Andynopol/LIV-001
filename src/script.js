@@ -177,6 +177,9 @@ class Rebus{
 				ev.preventDefault();
 				this.blur();
 			}
+			else {
+				this.value = "";
+			}
 		
 			if (ev.keyCode === 8) {
 				if(currentValue){
