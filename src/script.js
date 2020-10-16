@@ -1,6 +1,57 @@
 const data = require('./data');
 const root = document.getElementById('root');
 
+function cellKeyUp(ev) {
+	const currentValue = this.value;
+	const cell = this.parentElement;
+	const line = cell.parentElement;
+
+	if (ev.keyCode === 13) {
+		ev.preventDefault();
+		if (currentValue === "") {
+			deleteLastCell(line);
+		} else {
+			this.blur();
+		}
+	} else {
+		this.value = "";
+	}
+
+	if (ev.keyCode === 8) {
+		ev.preventDefault();
+		if (isLastCell(line, cell) && line.querySelectorAll(".full").length !== 1) {
+			if (currentValue === "") {
+				ev.preventDefault();
+				deleteLastCell(line);
+				focustLastInput(line);
+			}
+		}
+	}
+}
+
+function cellKeyDown(ev) {
+	const cell = this.parentElement;
+	const line = cell.parentElement;
+	var key = ev.keyCode;
+	if ((key >= 65 && key <= 90) || key == 32) {
+		if (isLastCell(line, cell)) {
+			if(this.value!==""){
+				insertNewCell(line);
+			}
+			
+		} else {
+			focusNextInput(cell);
+		}
+	} else if (key === 13) {
+		ev.preventDefault();
+		this.value = this.value;
+	} else if (ev.keyCode === 8) {
+		ev.preventDefault();
+	} else {
+		this.value = "";
+	}
+}
+
 class Rebus{
 	constructor(data , root){
 		this.data = data;
