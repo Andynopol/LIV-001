@@ -142,10 +142,12 @@ class Rebus{
 	enableInput(input){
 		const that = this;
 		input.addEventListener("keydown", function(){
+			const currentValue = this.value;
 			const cell = this.parentElement;
 			const row = cell.parentElement;
 			var key = ev.keyCode;
 			if ((key >= 65 && key <= 90) || key == 32) {
+				
 				if(that.isLastCell(row, cell)){
 					
 				}
@@ -189,11 +191,12 @@ class Rebus{
 	}
 
 	cellKeyDown(ev) {
+		const currentValue = this.value;
 		const cell = this.parentElement;
 		const line = cell.parentElement;
 		var key = ev.keyCode;
 		if ((key >= 65 && key <= 90) || key == 32) {
-	
+			
 		}
 	}
 }
