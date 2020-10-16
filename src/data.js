@@ -9,7 +9,7 @@ const data = {
     },
     {
         word: "blia",
-        blanks: 2,
+        blanks: 4,
     }
 ],
     rows : 3,

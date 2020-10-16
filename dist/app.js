@@ -10,7 +10,7 @@ const data = {
     },
     {
         word: "blia",
-        blanks: 2,
+        blanks: 4,
     }
 ],
     rows : 3,
@@ -32,6 +32,7 @@ class Rebus{
 	generate(){
 		this.addRows();
 		this.addWords();
+		this.enableCells();
 	}
 
 	addRows(){
@@ -49,15 +50,56 @@ class Rebus{
 		for(let i = 0; i < words.length; i++){
 			const word = words[i];
 			const row = this.rows[i];
+			this.addBlanks(word, row);
 			this.addCells(word, row);
 		}
 	}
 
-	addCells(word, row){
+	addBlanks(word, row){
 		const blanks = word.blanks
-		const letterArray = [...word.word];
-		const wordLength = blanks + letterArray.length;
-		console.log(wordLength);
+		for(var i = 0; i<blanks; i++){
+			const blank = document.createElement('div');
+			blank.classList.add('blank');
+			row.appendChild(blank);
+		}
+	}
+	
+	addCells(word, row){
+		const letters = [...word.word];
+		for(var i = 0; i<letters.length; i++){
+			const letter = letters[i];
+			const cell = document.createElement('div');
+			const input = document.createElement('input');
+			input.setAttribute('type', 'text');
+			input.setAttribute('class', 'letter');
+			input.setAttribute('size', '1');
+			input.setAttribute('maxlength', '1');
+			cell.classList.add('blank','cell');
+			cell.setAttribute('letter', letter);
+			cell.appendChild(input);
+			row.appendChild(cell);
+		}
+	}
+
+	enableCells(){
+		for(var i = 0; i<this.rows.length; i++){
+			const row = this.rows[i];
+			this.enableCellsOnCurrentRow(row);
+		}
+	}
+
+	enableCellsOnCurrentRow(row){
+		const cells = row.getElementsByClassName('cell');
+		for(var i = 0; i<cells.length; i++){
+			const cell = cells[i];
+			this.enableCurrentCell(cell);
+		}
+	}
+
+	enableCurrentCell(cell){
+		console.log(cell);
+		const input = cell.firstChild;
+		console.log(input);
 	}
 }
 
