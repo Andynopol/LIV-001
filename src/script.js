@@ -145,6 +145,16 @@ class Rebus{
 			const currentValue = this.value;
 			const cell = this.parentElement;
 			const row = cell.parentElement;
+
+			if (ev.keyCode === 13) { //ENTER
+				ev.preventDefault();
+				this.blur();
+			}
+		});
+		input.addEventListener("keyup", function(){
+
+			const cell = this.parentElement;
+			const row = cell.parentElement;
 			var key = ev.keyCode;
 			if ((key >= 65 && key <= 90) || key == 32) {
 				
@@ -154,16 +164,6 @@ class Rebus{
 				else{
 					that.focusNextInput(cell);
 				}
-			}
-		});
-		input.addEventListener("keyup", function(){
-			const currentValue = this.value;
-			const cell = this.parentElement;
-			const row = cell.parentElement;
-
-			if (ev.keyCode === 13) { //ENTER
-				ev.preventDefault();
-				this.blur();
 			}
 		});
 	}
