@@ -140,7 +140,7 @@ function insertNewCell(line) {
 	focustLastInput(line);
 }
 
-function cellKeyUpOnEdit(ev) {
+function cellKeyDownOnEdit(ev) {
 	const currentValue = this.value;
 	const cell = this.parentElement;
 	const line = cell.parentElement;
@@ -168,7 +168,7 @@ function cellKeyUpOnEdit(ev) {
 	}
 }
 
-function cellKeyDownOnEdit(ev) {
+function cellKeyUpOnEdit(ev) {
 	const cell = this.parentElement;
 	const line = cell.parentElement;
 	var key = ev.keyCode;
@@ -193,8 +193,8 @@ function cellKeyDownOnEdit(ev) {
 
 function enableCurrentCell(cell) {
 	const input = cell.getElementsByClassName("letter")[0];
-	input.addEventListener("keydown", cellKeyUpOnEdit);
-	input.addEventListener("keyup", cellKeyDownOnEdit);
+	input.addEventListener("keydown", cellKeyDownOnEdit);
+	input.addEventListener("keyup", cellKeyUpOnEdit);
 }
 
 function enableCellsOnCurrentLine(line) {
