@@ -9,7 +9,7 @@ const data = {
         blanks: 6,
     },
     {
-        word: "blia",
+        word: "bila",
         blanks: 4,
     }
 ],
@@ -21,6 +21,47 @@ module.exports = data;
 },{}],2:[function(require,module,exports){
 const data = require('./data');
 const root = document.getElementById('root');
+
+function isLastCell(line, cell) {
+	const lastCell = line.querySelector(".full:last-child");
+	if (lastCell === cell) {
+		return true;
+	}
+	return false;
+}
+
+function cellKeyUp(ev) {
+	const currentValue = this.value;
+	const cell = this.parentElement;
+	const line = cell.parentElement;
+	console.log(this);
+	// console.log(super.root);
+
+	if (ev.keyCode === 13) {
+		ev.preventDefault();
+		this.blur();
+	}
+
+	if (ev.keyCode === 8) {
+		ev.preventDefault();
+		if (isLastCell(line, cell) && line.querySelectorAll(".full").length !== 1) {
+			if (currentValue === "") {
+				ev.preventDefault();
+			}
+		}
+	}
+}
+
+function cellKeyDown(ev) {
+	console.log(this.parent);
+	// console.log(super.root);
+	const cell = this.parentElement;
+	const line = cell.parentElement;
+	var key = ev.keyCode;
+	if ((key >= 65 && key <= 90) || key == 32) {
+
+	}
+}
 
 class Rebus{
 	constructor(data , root){
@@ -99,7 +140,12 @@ class Rebus{
 	enableCurrentCell(cell){
 		console.log(cell);
 		const input = cell.firstChild;
-		console.log(input);
+		this.enableInput(input)
+	}
+
+	enableInput(input){
+		input.addEventListener("keydown", cellKeyDown);
+		input.addEventListener("keyup", cellKeyUp);
 	}
 }
 

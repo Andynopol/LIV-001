@@ -13,6 +13,8 @@ function cellKeyUp(ev) {
 	const currentValue = this.value;
 	const cell = this.parentElement;
 	const line = cell.parentElement;
+	console.log(this);
+	// console.log(super.root);
 
 	if (ev.keyCode === 13) {
 		ev.preventDefault();
@@ -30,6 +32,8 @@ function cellKeyUp(ev) {
 }
 
 function cellKeyDown(ev) {
+	console.log(this);
+	// console.log(super.root);
 	const cell = this.parentElement;
 	const line = cell.parentElement;
 	var key = ev.keyCode;
@@ -97,6 +101,14 @@ class Rebus{
 		}
 	}
 
+	isLastCell(line, cell) {
+		const lastCell = line.querySelector(".full:last-child");
+		if (lastCell === cell) {
+			return true;
+		}
+		return false;
+	}
+
 	enableCells(){
 		for(var i = 0; i<this.rows.length; i++){
 			const row = this.rows[i];
@@ -119,8 +131,51 @@ class Rebus{
 	}
 
 	enableInput(input){
-		input.addEventListener("keydown", cellKeyUp);
-		input.addEventListener("keyup", cellKeyDown);
+		const that = this;
+		input.addEventListener("keydown", function(){
+			
+		});
+		input.addEventListener("keyup", function(){
+			const currentValue = this.value;
+			const cell = this.parentElement;
+			const line = cell.parentElement;
+
+			if (ev.keyCode === 13) { //ENTER
+				ev.preventDefault();
+				this.blur();
+			}
+		});
+	}
+
+	cellKeyUp(ev) {
+		const currentValue = this.value;
+		const cell = this.parentElement;
+		const line = cell.parentElement;
+		console.log(this);
+		// console.log(super.root);
+	
+		if (ev.keyCode === 13) {
+			ev.preventDefault();
+			this.blur();
+		}
+	
+		if (ev.keyCode === 8) {
+			ev.preventDefault();
+			if (isLastCell(line, cell) && line.querySelectorAll(".full").length !== 1) {
+				if (currentValue === "") {
+					ev.preventDefault();
+				}
+			}
+		}
+	}
+
+	cellKeyDown(ev) {
+		const cell = this.parentElement;
+		const line = cell.parentElement;
+		var key = ev.keyCode;
+		if ((key >= 65 && key <= 90) || key == 32) {
+	
+		}
 	}
 }
 

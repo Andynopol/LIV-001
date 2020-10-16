@@ -8,7 +8,7 @@ const data = {
         blanks: 6,
     },
     {
-        word: "blia",
+        word: "bila",
         blanks: 4,
     }
 ],
