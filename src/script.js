@@ -9,16 +9,20 @@ function isLastCell(line, cell) {
 	return false;
 }
 
-function cellKeyUp(ev) {
+function cellKeyDownOnEdit(ev) {
 	const currentValue = this.value;
 	const cell = this.parentElement;
 	const line = cell.parentElement;
-	console.log(this);
-	// console.log(super.root);
 
 	if (ev.keyCode === 13) {
 		ev.preventDefault();
-		this.blur();
+		if (currentValue === "") {
+			deleteLastCell(line);
+		} else {
+			this.blur();
+		}
+	} else {
+		this.value = "";
 	}
 
 	if (ev.keyCode === 8) {
@@ -26,19 +30,33 @@ function cellKeyUp(ev) {
 		if (isLastCell(line, cell) && line.querySelectorAll(".full").length !== 1) {
 			if (currentValue === "") {
 				ev.preventDefault();
+				deleteLastCell(line);
+				focustLastInput(line);
 			}
 		}
 	}
 }
 
-function cellKeyDown(ev) {
-	console.log(this);
-	// console.log(super.root);
+function cellKeyUpOnEdit(ev) {
 	const cell = this.parentElement;
 	const line = cell.parentElement;
 	var key = ev.keyCode;
 	if ((key >= 65 && key <= 90) || key == 32) {
-
+		if (isLastCell(line, cell)) {
+			if(this.value!==""){
+				insertNewCell(line);
+			}
+			
+		} else {
+			focusNextInput(cell);
+		}
+	} else if (key === 13) {
+		ev.preventDefault();
+		this.value = this.value;
+	} else if (ev.keyCode === 8) {
+		ev.preventDefault();
+	} else {
+		this.value = "";
 	}
 }
 
@@ -118,6 +136,15 @@ class Rebus{
 		nextCellInput.focus();
 	}
 
+	focusPrevInput(cell){
+		const row = cell.parentElement;
+		const cells = [...row.getElementsByClassName("full")];
+		const nextCellInput = cells[cells.indexOf(cell) - 1].querySelector(
+			".letter:first-child",
+		);
+		nextCellInput.focus();
+	}
+
 	enableCells(){
 		for(var i = 0; i<this.rows.length; i++){
 			const row = this.rows[i];
@@ -141,17 +168,25 @@ class Rebus{
 
 	enableInput(input){
 		const that = this;
-		input.addEventListener("keydown", function(){
+		input.addEventListener("keydown", function(ev){
 			const currentValue = this.value;
 			const cell = this.parentElement;
 			const row = cell.parentElement;
 
-			if (ev.keyCode === 13) { //ENTER
+			if (ev.keyCode === 13) {
 				ev.preventDefault();
 				this.blur();
 			}
+		
+			if (ev.keyCode === 8) {
+				if(currentValue){
+					ev.preventDefault();
+					this.blur();
+					that.focusPrevInput(cell);
+				}
+			}
 		});
-		input.addEventListener("keyup", function(){
+		input.addEventListener("keyup", function(ev){
 
 			const cell = this.parentElement;
 			const row = cell.parentElement;
@@ -164,9 +199,18 @@ class Rebus{
 				else{
 					that.focusNextInput(cell);
 				}
+			} else if (key === 13) {
+				ev.preventDefault();
+				this.value = this.value;
+			} else if (ev.keyCode === 8) {
+				ev.preventDefault();
+			} else {
+				this.value = "";
 			}
 		});
 	}
+
+	
 
 	cellKeyUp(ev) {
 		const currentValue = this.value;
