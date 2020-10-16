@@ -127,7 +127,6 @@ function isLastCell(line, cell) {
 }
 
 function insertNewCell(line) {
-	// const cells = [...line.getElementsByClassName('full')];
 	const newCell = document.createElement("div");
 	newCell.classList.add("cell", "full");
 	const newInput = document.createElement("input");
