@@ -129,7 +129,7 @@ class Rebus{
 
 	focusNextInput(cell) {
 		const row = cell.parentElement;
-		const cells = [...row.getElementsByClassName("full")];
+		const cells = [...row.getElementsByClassName("cell")];
 		const nextCellInput = cells[cells.indexOf(cell) + 1].querySelector(
 			".letter:first-child",
 		);
@@ -138,7 +138,7 @@ class Rebus{
 
 	focusPrevInput(cell){
 		const row = cell.parentElement;
-		const cells = [...row.getElementsByClassName("full")];
+		const cells = [...row.getElementsByClassName("cell")];
 		const nextCellInput = cells[cells.indexOf(cell) - 1].querySelector(
 			".letter:first-child",
 		);
@@ -172,21 +172,17 @@ class Rebus{
 			const currentValue = this.value;
 			const cell = this.parentElement;
 			const row = cell.parentElement;
+			var key = ev.keyCode;
 
 			if (ev.keyCode === 13) {
 				ev.preventDefault();
 				this.blur();
 			}
-			else {
-				this.value = "";
-			}
 		
 			if (ev.keyCode === 8) {
-				if(currentValue){
-					ev.preventDefault();
-					this.blur();
-					that.focusPrevInput(cell);
-				}
+				this.blur();
+				that.focusPrevInput(cell);
+
 			}
 		});
 		input.addEventListener("keyup", function(ev){

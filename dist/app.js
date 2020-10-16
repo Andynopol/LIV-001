@@ -30,16 +30,20 @@ function isLastCell(line, cell) {
 	return false;
 }
 
-function cellKeyUp(ev) {
+function cellKeyDownOnEdit(ev) {
 	const currentValue = this.value;
 	const cell = this.parentElement;
 	const line = cell.parentElement;
-	console.log(this);
-	// console.log(super.root);
 
 	if (ev.keyCode === 13) {
 		ev.preventDefault();
-		this.blur();
+		if (currentValue === "") {
+			deleteLastCell(line);
+		} else {
+			this.blur();
+		}
+	} else {
+		this.value = "";
 	}
 
 	if (ev.keyCode === 8) {
@@ -47,19 +51,33 @@ function cellKeyUp(ev) {
 		if (isLastCell(line, cell) && line.querySelectorAll(".full").length !== 1) {
 			if (currentValue === "") {
 				ev.preventDefault();
+				deleteLastCell(line);
+				focustLastInput(line);
 			}
 		}
 	}
 }
 
-function cellKeyDown(ev) {
-	console.log(this.parent);
-	// console.log(super.root);
+function cellKeyUpOnEdit(ev) {
 	const cell = this.parentElement;
 	const line = cell.parentElement;
 	var key = ev.keyCode;
 	if ((key >= 65 && key <= 90) || key == 32) {
-
+		if (isLastCell(line, cell)) {
+			if(this.value!==""){
+				insertNewCell(line);
+			}
+			
+		} else {
+			focusNextInput(cell);
+		}
+	} else if (key === 13) {
+		ev.preventDefault();
+		this.value = this.value;
+	} else if (ev.keyCode === 8) {
+		ev.preventDefault();
+	} else {
+		this.value = "";
 	}
 }
 
@@ -122,6 +140,32 @@ class Rebus{
 		}
 	}
 
+	isLastCell(row, cell) {
+		const lastCell = row.querySelector(".full:last-child");
+		if (lastCell === cell) {
+			return true;
+		}
+		return false;
+	}
+
+	focusNextInput(cell) {
+		const row = cell.parentElement;
+		const cells = [...row.getElementsByClassName("cell")];
+		const nextCellInput = cells[cells.indexOf(cell) + 1].querySelector(
+			".letter:first-child",
+		);
+		nextCellInput.focus();
+	}
+
+	focusPrevInput(cell){
+		const row = cell.parentElement;
+		const cells = [...row.getElementsByClassName("cell")];
+		const nextCellInput = cells[cells.indexOf(cell) - 1].querySelector(
+			".letter:first-child",
+		);
+		nextCellInput.focus();
+	}
+
 	enableCells(){
 		for(var i = 0; i<this.rows.length; i++){
 			const row = this.rows[i];
@@ -144,8 +188,85 @@ class Rebus{
 	}
 
 	enableInput(input){
-		input.addEventListener("keydown", cellKeyDown);
-		input.addEventListener("keyup", cellKeyUp);
+		const that = this;
+		input.addEventListener("keydown", function(ev){
+			const currentValue = this.value;
+			const cell = this.parentElement;
+			const row = cell.parentElement;
+			var key = ev.keyCode;
+
+			if ((key >= 65 && key <= 90) || key == 32) {
+				ev.preventDefault();
+				this.value = "";
+			}
+
+			if (ev.keyCode === 13) {
+				ev.preventDefault();
+				this.blur();
+			}
+		
+			if (ev.keyCode === 8) {
+				this.blur();
+				that.focusPrevInput(cell);
+
+			}
+		});
+		input.addEventListener("keyup", function(ev){
+
+			const cell = this.parentElement;
+			const row = cell.parentElement;
+			var key = ev.keyCode;
+			if ((key >= 65 && key <= 90) || key == 32) {
+				
+				if(that.isLastCell(row, cell)){
+					
+				}
+				else{
+					that.focusNextInput(cell);
+				}
+			} else if (key === 13) {
+				ev.preventDefault();
+				this.value = this.value;
+			} else if (ev.keyCode === 8) {
+				ev.preventDefault();
+			} else {
+				this.value = "";
+			}
+		});
+	}
+
+	
+
+	cellKeyUp(ev) {
+		const currentValue = this.value;
+		const cell = this.parentElement;
+		const line = cell.parentElement;
+		console.log(this);
+		// console.log(super.root);
+	
+		if (ev.keyCode === 13) {
+			ev.preventDefault();
+			this.blur();
+		}
+	
+		if (ev.keyCode === 8) {
+			ev.preventDefault();
+			if (isLastCell(line, cell) && line.querySelectorAll(".full").length !== 1) {
+				if (currentValue === "") {
+					ev.preventDefault();
+				}
+			}
+		}
+	}
+
+	cellKeyDown(ev) {
+		const currentValue = this.value;
+		const cell = this.parentElement;
+		const line = cell.parentElement;
+		var key = ev.keyCode;
+		if ((key >= 65 && key <= 90) || key == 32) {
+			
+		}
 	}
 }
 
