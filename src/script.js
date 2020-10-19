@@ -20,7 +20,7 @@ class Rebus{
 			row.classList.add('row');
 			this.root.appendChild(row);
 		}
-		this.rows = document.getElementsByClassName('row');
+		this.rows = [...document.getElementsByClassName('row')];
 	}
 
 	addWords(){
@@ -76,6 +76,14 @@ class Rebus{
 		return false;
 	}
 
+	focusFirstInput(row){
+		const firstCell = row.getElementsByClassName('cell')[0];
+		const input = firstCell.querySelector(
+			".letter:first-child",
+		);
+		input.focus();
+	}
+
 	focusNextInput(cell) {
 		const row = cell.parentElement;
 		const cells = [...row.getElementsByClassName("cell")];
@@ -92,6 +100,18 @@ class Rebus{
 			".letter:first-child",
 		);
 		prevCellInput.focus();
+	}
+
+	focusNextRow(row){
+		console.log(row);
+		if(this.rows[this.rows.indexOf(row)] === this.rows[this.rows.length - 1]){
+			return;
+		}
+		else{
+			const nextRow = this.rows[this.rows.indexOf(row)+1];
+			console.log(nextRow);
+			this.focusFirstInput(nextRow);
+		}
 	}
 
 	enableCells(){
@@ -130,6 +150,7 @@ class Rebus{
 			if (ev.keyCode === 13) {
 				ev.preventDefault();
 				this.blur();
+				that.focusNextRow(this.parentElement.parentElement);
 			}
 		
 			if (ev.keyCode === 8) {
@@ -169,7 +190,7 @@ class Rebus{
 
 	
 
-	cellKeyUp(ev) {
+	cellKeyUp(ev, that) {
 		const currentValue = this.value;
 		const cell = this.parentElement;
 		const line = cell.parentElement;
@@ -178,7 +199,8 @@ class Rebus{
 	
 		if (ev.keyCode === 13) {
 			ev.preventDefault();
-			this.blur();
+			// this.blur();
+			
 		}
 	
 		if (ev.keyCode === 8) {
@@ -191,7 +213,7 @@ class Rebus{
 		}
 	}
 
-	cellKeyDown(ev) {
+	cellKeyDown(ev, that) {
 		const currentValue = this.value;
 		const cell = this.parentElement;
 		const line = cell.parentElement;
@@ -200,6 +222,8 @@ class Rebus{
 			
 		}
 	}
+
+
 }
 
 const rebus = new Rebus(data, root);
