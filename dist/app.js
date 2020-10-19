@@ -165,7 +165,7 @@ class Rebus{
 			var key = ev.keyCode;
 
 			if ((key >= 65 && key <= 90) || key == 32) {
-				this.value = '';
+				// this.value = '';
 			}
 
 			if (ev.keyCode === 13) {
@@ -201,7 +201,6 @@ class Rebus{
 			} else if (key === 13) {
 				ev.preventDefault();
 				this.value = this.value;
-				// that.focusNextRow(this.parentElement.parentElement);
 			} else if (ev.keyCode === 8) {
 				ev.preventDefault();
 			} else {
@@ -212,7 +211,7 @@ class Rebus{
 
 	
 
-	cellKeyUp(ev) {
+	cellKeyUp(ev, that) {
 		const currentValue = this.value;
 		const cell = this.parentElement;
 		const line = cell.parentElement;
@@ -235,7 +234,7 @@ class Rebus{
 		}
 	}
 
-	cellKeyDown(ev) {
+	cellKeyDown(ev, that) {
 		const currentValue = this.value;
 		const cell = this.parentElement;
 		const line = cell.parentElement;
