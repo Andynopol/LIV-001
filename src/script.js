@@ -144,7 +144,7 @@ class Rebus{
 			var key = ev.keyCode;
 
 			if ((key >= 65 && key <= 90) || key == 32) {
-				// this.value = '';
+				this.value = '';
 			}
 
 			if (ev.keyCode === 13) {
