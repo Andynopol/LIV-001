@@ -248,6 +248,7 @@ class Rebus{
 
 	verifyCell(cell, letter){
 		const input = cell.querySelector('.letter:first-child');
+		input.setAttribute('readonly', 'readonly');
 		if(input.value === letter){
 			cell.parentElement.classList.add('correct');
 		}

@@ -122,33 +122,31 @@ button:active {
 .blank {
 	width: 30px;
 	height: 30px;
-	background-color: white;
-	border: 1px solid #000;
 	position: relative;
 	visibility: hidden;
 	opacity: 0;
+	border: 1px solid #000;
 	pointer-events: none;
 }
 
 .cell{
+	background-color: white;
+	border: 1px solid #000;
 	visibility: visible;
 	opacity: 1;
 	pointer-events: all;
 }
 
-.blank+.blank{
+.blank + .blank.cell{
+	border-left: 1px solid #000;
+}
+
+.blank + .blank{
 	border-left: none;
 }
 
-.cell + .cell {
+.blank.cell + .blank.cell {
 	border-left: none;
-}
-
-
-
-.cell.empty {
-	visibility: hidden;
-	user-select: none;
 }
 
 .disabled {
