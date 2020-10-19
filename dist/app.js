@@ -14,7 +14,8 @@ const data = {
     }
 ],
     rows : 3,
-    vertical: false
+    vertical: false,
+    numOfAtemps: 3,
 };
 
 module.exports = data;
@@ -23,15 +24,18 @@ const data = require('./data');
 const root = document.getElementById('root');
 const controls = [...document.getElementById('controls').getElementsByTagName('button')];
 
-class Rebus{
+class CorssWords{
 	constructor(data, root, controls){
 		this.data = data;
 		this. root = root;
 		this.rows = null;
 		this.controls = controls;
 		this.verify = null;
+		this.retry = null;
 		this.setVerify();
-		console.log(this.verify);
+		this.setRetry();
+		this.atempts = 1;
+		console.log(this.retry);
 	}
 
 	generate(){
@@ -165,7 +169,7 @@ class Rebus{
 	enableInput(input){
 		const that = this;
 		input.addEventListener("keydown", function(ev){
-			// const currentValue = this.value;
+			const currentValue = this.value;
 			const cell = this.parentElement;
 			const row = cell.parentElement;
 			var key = ev.keyCode;
@@ -180,13 +184,16 @@ class Rebus{
 		
 			if (key === 8) {
 				ev.preventDefault();
-				this.value = "";
-				console.log(that.isFirstCell(row, cell));
 				if(that.isFirstCell(row, cell))
 				{
 					console.log("CEVA");
 				}else{
-					that.focusPrevInput(cell);
+					if(currentValue === ''){
+						that.focusPrevInput(cell);
+					}
+					else{
+						this.value = '';
+					}
 				}	
 			}
 		});
@@ -211,7 +218,7 @@ class Rebus{
 			} else if (ev.keyCode === 8) {
 				ev.preventDefault();
 			} else {
-				this.value = "";
+				ev.preventDefault();
 			}
 		});
 	}
@@ -232,6 +239,8 @@ class Rebus{
 	}
 
 	verifyAll(){
+		this.enableRetry();
+		this.verify.classList.add('invisible');
 		for(var row of this.rows){
 			this.verifyRow(row, this.data.words[this.rows.indexOf(row)].word);
 		}
@@ -239,25 +248,80 @@ class Rebus{
 
 	verifyRow(row, word){
 		const cells = [...row.getElementsByClassName('cell')];
+		var correct = true;
 		console.log(word);
 		const letters = [...word];
 		for(var cell of cells){
-			this.verifyCell(cell, letters[cells.indexOf(cell)]);
+			if(!this.verifyCell(cell, letters[cells.indexOf(cell)])){
+				correct = false;
+				break;
+			}
+		}
+
+		if(correct){
+			row.classList.add('verified', 'correct');
+		}
+		else{
+			row.classList.add('verified', 'incorrect');
 		}
 	}
 
 	verifyCell(cell, letter){
 		const input = cell.querySelector('.letter:first-child');
-		input.setAttribute('readonly', 'readonly');
+		input.setAttribute('readonly', '');
+		input.classList.add('petrified');
 		if(input.value === letter){
-			cell.parentElement.classList.add('correct');
+			return true;
 		}
 		else{
-			cell.parentElement.classList.add('incorrect');
+			return false;
 		}
+	}
+
+	setRetry(){
+		for(var elem of this.controls){
+			if(elem.getAttribute('id') === 'retry'){
+				this.retry = elem;
+			}
+		}
+	}
+
+	enableRetry(){
+		const that = this;
+		this.retry.classList.remove('invisible');
+		this.retry.addEventListener('click', function handler(){
+			console.log('reset');
+			that.reset(that);
+			this.removeEventListener('click', handler);
+			this.classList.add('invisible');
+		});
+	}
+
+	reset(){
+		console.log('reset');
+		if(this.atempts < this.data.numOfAtemps){
+			console.log('reste');
+			this.atempts++;
+			for(var row of this.rows){
+				row.classList.remove('correct', 'incorrect', 'verified');
+				const cells = row.getElementsByClassName('cell');
+				for( var cell of cells ){
+					const input = cell.querySelector('.letter:first-child');
+					input.classList.remove('petrified');
+					input.value = '';
+					input.removeAttribute('readonly', '');
+				}
+			}
+			if(this.atempts === this.data.numOfAtemps){
+				this.retry.style.visibility = 'hidden';
+			}
+			this.verify.classList.remove('invisible');
+		}
+		this.focusFirstInput(this.rows[0]);
+
 	}
 }
 
-const rebus = new Rebus(data, root, controls);
-rebus.generate();
+const crosswords = new CorssWords(data, root, controls);
+crosswords.generate();
 },{"./data":1}]},{},[1,2]);

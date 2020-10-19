@@ -13,7 +13,8 @@ const data = {
     }
 ],
     rows : 3,
-    vertical: false
+    vertical: false,
+    numOfAtemps: 3,
 };
 
 module.exports = data;

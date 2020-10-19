@@ -6,6 +6,9 @@ body {
 	font-size: 16px;
 	color: white;
 	user-select: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #container {
@@ -26,9 +29,6 @@ body {
 	padding: 10px;
 	color: #000;
 	background: rgba(255, 255, 255, 0.8);
-}
-
-.buttons {
 }
 
 .row {
@@ -53,6 +53,7 @@ button {
 	transition-duration: 200ms;
 	margin-right: 4px;
 	display: inline-block;
+	user-select: none;
 }
 
 button:hover {
@@ -158,6 +159,7 @@ button:active {
 	visibility: hidden;
 	opacity: 0;
 	pointer-events: none;
+	
 }
 
 input {
@@ -184,10 +186,18 @@ input.letter {
 
 .row.correct>.cell{
 	background-color: green;
-	color: white;
 }
 
 .row.incorrect>.cell{
 	background-color: red;
-	color: white;
+}
+
+.row.verified>.cell>input{
+	filter: invert(1) hue-rotate(180deg);
+}
+
+
+.petrified{
+	pointer-events: none;
+	user-select: none;
 }
