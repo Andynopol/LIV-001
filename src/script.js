@@ -1,17 +1,23 @@
 const data = require('./data');
 const root = document.getElementById('root');
+const controls = [...document.getElementById('controls').getElementsByTagName('button')];
 
 class Rebus{
-	constructor(data , root){
+	constructor(data, root, controls){
 		this.data = data;
 		this. root = root;
 		this.rows = null;
+		this.controls = controls;
+		this.verify = null;
+		this.setVerify();
+		console.log(this.verify);
 	}
 
 	generate(){
 		this.addRows();
 		this.addWords();
 		this.enableCells();
+		this.enableVerify();
 	}
 
 	addRows(){
@@ -20,7 +26,7 @@ class Rebus{
 			row.classList.add('row');
 			this.root.appendChild(row);
 		}
-		this.rows = [...document.getElementsByClassName('row')];
+		this.rows = [...this.root.getElementsByClassName('row')];
 	}
 
 	addWords(){
@@ -143,17 +149,15 @@ class Rebus{
 			const row = cell.parentElement;
 			var key = ev.keyCode;
 
-			if ((key >= 65 && key <= 90) || key == 32) {
-				// this.value = '';
-			}
-
-			if (ev.keyCode === 13) {
+			if (key === 13) {
 				ev.preventDefault();
-				this.blur();
 				that.focusNextRow(this.parentElement.parentElement);
 			}
+			else{
+				this.value = "";
+			}
 		
-			if (ev.keyCode === 8) {
+			if (key === 8) {
 				ev.preventDefault();
 				this.value = "";
 				console.log(that.isFirstCell(row, cell));
@@ -175,7 +179,10 @@ class Rebus{
 					
 				}
 				else{
-					that.focusNextInput(cell);
+					if(this.value !== ''){
+						that.focusNextInput(cell);
+					}
+					
 				}
 			} else if (key === 13) {
 				ev.preventDefault();
@@ -188,43 +195,46 @@ class Rebus{
 		});
 	}
 
-	
-
-	cellKeyUp(ev, that) {
-		const currentValue = this.value;
-		const cell = this.parentElement;
-		const line = cell.parentElement;
-		console.log(this);
-		// console.log(super.root);
-	
-		if (ev.keyCode === 13) {
-			ev.preventDefault();
-			// this.blur();
-			
-		}
-	
-		if (ev.keyCode === 8) {
-			ev.preventDefault();
-			if (isLastCell(line, cell) && line.querySelectorAll(".full").length !== 1) {
-				if (currentValue === "") {
-					ev.preventDefault();
-				}
+	setVerify(){
+		for(var elem of this.controls){
+			if(elem.getAttribute('id') === 'verify'){
+				this.verify = elem;
 			}
 		}
 	}
 
-	cellKeyDown(ev, that) {
-		const currentValue = this.value;
-		const cell = this.parentElement;
-		const line = cell.parentElement;
-		var key = ev.keyCode;
-		if ((key >= 65 && key <= 90) || key == 32) {
-			
+	enableVerify(){
+		const that = this;
+		this.verify.addEventListener('click', function(){
+			that.verifyAll();
+		});
+	}
+
+	verifyAll(){
+		for(var row of this.rows){
+			this.verifyRow(row, this.data.words[this.rows.indexOf(row)].word);
 		}
 	}
 
+	verifyRow(row, word){
+		const cells = [...row.getElementsByClassName('cell')];
+		console.log(word);
+		const letters = [...word];
+		for(var cell of cells){
+			this.verifyCell(cell, letters[cells.indexOf(cell)]);
+		}
+	}
 
+	verifyCell(cell, letter){
+		const input = cell.querySelector('.letter:first-child');
+		if(input.value === letter){
+			cell.parentElement.classList.add('correct');
+		}
+		else{
+			cell.parentElement.classList.add('incorrect');
+		}
+	}
 }
 
-const rebus = new Rebus(data, root);
+const rebus = new Rebus(data, root, controls);
 rebus.generate();

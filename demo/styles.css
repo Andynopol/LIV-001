@@ -184,10 +184,12 @@ input.letter {
 	width: 100px;
 }
 
-.line.correct>.full{
+.row.correct>.cell{
 	background-color: green;
+	color: white;
 }
 
-.line.incorrect>.full{
+.row.incorrect>.cell{
 	background-color: red;
+	color: white;
 }
