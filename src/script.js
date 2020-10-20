@@ -31,10 +31,12 @@ class CrossWrodsEditor{
 		this.rows = null;
 		this.add = null;
 		this.generate = null;
-		this.numOfAttempts = null;
-		this.attempts = 1;
+		this.numOfAtempts = null;
+		this.atempts = 1;
 		this.updateRows();
 		this.setControls();
+		this.data = {};
+		this.vertical = false;
 	}
 
 	updateRows(){
@@ -49,14 +51,10 @@ class CrossWrodsEditor{
 			if(item.id === 'generate'){
 				this.generate = item;
 			}
-			if(item.id === 'numberOfAttempts'){
-				this.numOfAttempts = item;
+			if(item.id === 'numberOfAtempts'){
+				this.numOfAtempts = item;
 			}
 		}
-	}
-
-	setGenerate(){
-
 	}
 
 	bindCells(){
@@ -90,6 +88,20 @@ class CrossWrodsEditor{
 
 	deleteLastCell(line){
 		line.removeChild(line.childNodes[line.childNodes.length - 1]);
+	}
+
+	deleteCurrentCell(line, index){
+		line.removeChild(line.childNodes[index]);
+	}
+
+	noEmptyCells(){
+		const inputs = this.root.getElementsByTagName('input');
+		for(var input of inputs){
+			if(input.value === ''){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	focusLastInput(line){
@@ -318,24 +330,92 @@ class CrossWrodsEditor{
 			newLine.appendChild(cell);
 			cell.appendChild(input);
 
-			//binding new elements
+			//binding and checking new elements
 
 			that.updateRows();
 			that.bindPositionersOnCurrentRow(newRow);
 			that.bindCell(cell);
 			that.bindDeleteOnCurrentRow(newRow);
 			that.checkDelete();
-
-			//TODO add the remove current row button
-
 		});
 	}
 
-	bindNumberOfAttempts(){
+	bindNumberOfAtempts(){
+		const that = this;
+		this.numOfAtempts.addEventListener('click', function(){
+			const parent = this.parentElement;
+			const label = parent.getElementsByTagName('label')[0];
+			const input = document.createElement('input');
+			input.type = 'number';
+			input.name = 'numberOfAtemptsInput';
+			input.id = 'numberOfAtemptsInput';
+			input.min = '1';
+			input.max = '100';
+			parent.removeChild(this);
+			label.for = input.id;
+			parent.appendChild(input);
+			input.value = 1;
+			input.addEventListener('change', function(){
+				that.atempts = Number.parseInt(this.value);
+			})
+		});
+	}
 
+	getCurrentWord(cells){
+		var word = '';
+		for(var cell of cells){
+			const input = cell.getElementsByTagName('input')[0];
+			word = word + input.value + '';
+		}
+		return word;
+	}
+
+	deleteLastCells(){
+		for(var row of this.rows){
+			const line = row.getElementsByClassName('line')[0];
+			const cells = [...line.getElementsByClassName('cell')];
+			// for(var i = 0; i<cells.length; i++){
+			// 	const cell = cells[i];
+			// 	const input = cell.getElementsByTagName('input')[0];
+			// 	if(input.value === ''){
+			// 		this.deleteCurrentCell(line, i+1);
+			// 	}
+			// }
+			const lastCell = cells[cells.length - 1];
+			const input = lastCell.getElementsByTagName('input')[0];
+			if(input.value === ''){
+				this.deleteLastCell(line);
+			}
+		}
 	}
 
 	bindGenerate(){
+		const that = this;
+		this.generate.addEventListener('click', function(){
+			that.deleteLastCells();
+			if(that.noEmptyCells()){
+				that.data = {};
+				that.data.words = [];
+				for(var row of that.rows){
+					const blanks = row.getElementsByClassName('line')[0].getElementsByClassName('blank');
+					const cells = row.getElementsByClassName('line')[0].getElementsByClassName('cell');
+					const word = {};
+					word.word = that.getCurrentWord(cells);
+					word.blanks = blanks.length - cells.length;
+					that.data.words.push(word);
+				}
+				that.data.rows = that.rows.length;
+				that.data.vertical = that.vertical;
+				if(that.numOfAtempts.value){
+					that.atempts = that.numOfAtempts.value;
+				}
+				that.data.numOfAtemps = that.atempts;
+				setTimeout(function(){
+					alert(JSON.stringify(that.data));
+				}, 1000);
+			}
+			
+		});
 		
 	}
 
@@ -345,8 +425,30 @@ class CrossWrodsEditor{
 		this.bindPositioners();
 		this.bindDelete();
 		this.bindAdd();
+		this.bindGenerate();
+		this.bindNumberOfAtempts();
 	}
 }
 
 const editor = new CrossWrodsEditor(root, controls);
 editor.start();
+
+
+const data = {
+    words: [{
+        word: "alfabet",
+        blanks: 3,
+    },
+    {
+        word: "castravete",
+        blanks: 6,
+    },
+    {
+        word: "bila",
+        blanks: 4,
+    }
+],
+    rows : 3,
+    vertical: false,
+    numOfAtemps: 3,
+};
