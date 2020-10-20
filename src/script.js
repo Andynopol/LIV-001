@@ -161,7 +161,7 @@ class CorssWords{
 
 	enableInput(input){
 		const that = this;
-		input.addEventListener("keydown input", function(ev){
+		input.addEventListener("keydown", function(ev){
 			const currentValue = this.value;
 			const cell = this.parentElement;
 			const row = cell.parentElement;
@@ -190,8 +190,32 @@ class CorssWords{
 				}	
 			}
 		});
-		input.addEventListener("keyup input", function(ev){
+		input.addEventListener("keyup", function(ev){
 
+			const cell = this.parentElement;
+			const row = cell.parentElement;
+			var key = ev.keyCode;
+			if ((key >= 65 && key <= 90) || key == 32) {
+				if(that.isLastCell(row, cell)){
+					
+				}
+				else{
+					if(this.value !== ''){
+						that.focusNextInput(cell);
+					}
+					
+				}
+			} else if (key === 13) {
+				ev.preventDefault();
+				this.value = this.value;
+			} else if (ev.keyCode === 8) {
+				ev.preventDefault();
+			} else {
+				ev.preventDefault();
+			}
+		});
+
+		input.addEventListener('touchend', function(ev){
 			const cell = this.parentElement;
 			const row = cell.parentElement;
 			var key = ev.keyCode;
