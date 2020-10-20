@@ -85,7 +85,7 @@ button:active {
 	display: block;
 }
 
-.positioner {
+.positioner, .delete {
 	width: 20px;
 	height: 20px;
 	display: flex;
@@ -106,6 +106,16 @@ button:active {
 }
 
 .positioner:active {
+	background: rgba(255, 255, 255, 1);
+	color: #081d5c;
+}
+
+.delete:hover{
+	background: rgba(255, 255, 255, 0.2);
+	cursor: pointer;
+}
+
+.delete:active {
 	background: rgba(255, 255, 255, 1);
 	color: #081d5c;
 }
@@ -171,4 +181,14 @@ input.letter {
 
 .wider {
 	width: 100px;
+}
+
+
+#numberOfAttempts{
+	width: 30px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-left: 5px;
 }

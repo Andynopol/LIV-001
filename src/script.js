@@ -30,21 +30,33 @@ class CrossWrodsEditor{
 		this.controls = controls;
 		this.rows = null;
 		this.add = null;
+		this.generate = null;
+		this.numOfAttempts = null;
+		this.attempts = 1;
 		this.updateRows();
-		this.setAdd();
+		this.setControls();
 	}
 
 	updateRows(){
 		this.rows = [...this.root.getElementsByClassName('row')];
 	}
 
-	setAdd(){
+	setControls(){
 		for(var item of controls){
 			if(item.id === 'addRow'){
 				this.add = item;
-				break;
+			}
+			if(item.id === 'generate'){
+				this.generate = item;
+			}
+			if(item.id === 'numberOfAttempts'){
+				this.numOfAttempts = item;
 			}
 		}
+	}
+
+	setGenerate(){
+
 	}
 
 	bindCells(){
@@ -228,6 +240,44 @@ class CrossWrodsEditor{
 		});
 	}
 
+	bindDelete(){
+		for(var row of this.rows){
+			this.bindDeleteOnCurrentRow(row);
+		}
+	}
+
+	emptyRoot(){
+		this.root.innerHTML = '';
+	}
+
+	injectInRoot(rows){
+		for(var row of rows){
+			this.root.appendChild(row);
+		}
+	}
+
+
+	checkDelete(){
+		const del = this.rows[0].getElementsByClassName('delete')[0];
+		if(this.rows.length === 1){
+			del.classList.add('disabled');
+		}else{
+			del.classList.remove('disabled');
+		}
+	}
+
+	bindDeleteOnCurrentRow(row){
+		const that = this;
+		const del = row.getElementsByClassName('delete')[0];
+		del.addEventListener('click', function(){
+			that.rows.splice(that.rows.indexOf(row), 1);
+			that.emptyRoot();
+			that.injectInRoot(that.rows);
+			that.updateRows();
+			that.checkDelete();
+		});
+	}
+
 	bindAdd(){
 		const that = this;
 		this.add.addEventListener('click', function(){
@@ -239,6 +289,7 @@ class CrossWrodsEditor{
 			const newLine = document.createElement('div');
 			const cell = document.createElement('div');
 			const input = document.createElement('input');
+			const del = document.createElement('div');
 
 			
 			//adding the classes and attributes
@@ -255,11 +306,15 @@ class CrossWrodsEditor{
 			input.size = '1';
 			input.maxLength = '1';
 
+			del.classList.add('delete');
+			del.innerText = 'X';
+
 			//appending to root
 			that.root.appendChild(newRow);
 			newRow.appendChild(newLeft);
 			newRow.appendChild(newRight);
 			newRow.appendChild(newLine);
+			newRow.appendChild(del);
 			newLine.appendChild(cell);
 			cell.appendChild(input);
 
@@ -268,16 +323,27 @@ class CrossWrodsEditor{
 			that.updateRows();
 			that.bindPositionersOnCurrentRow(newRow);
 			that.bindCell(cell);
+			that.bindDeleteOnCurrentRow(newRow);
+			that.checkDelete();
 
 			//TODO add the remove current row button
 
 		});
 	}
 
+	bindNumberOfAttempts(){
+		
+	}
+
+	bindGenerate(){
+
+	}
+
 	start(){
 		// this is called to start the editing
 		this.bindCells();
 		this.bindPositioners();
+		this.bindDelete();
 		this.bindAdd();
 	}
 }
