@@ -50,6 +50,9 @@ class CorssWords{
 			const blank = document.createElement('div');
 			blank.classList.add('blank');
 			row.appendChild(blank);
+			if(i === blanks-1){
+				blank.style.borderRight = 'none';
+			}
 		}
 	}
 	
