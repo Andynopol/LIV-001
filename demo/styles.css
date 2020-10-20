@@ -131,6 +131,7 @@ button:active {
 }
 
 .cell{
+	position: relative;
 	background-color: white;
 	border: 1px solid #000;
 	visibility: visible;
@@ -200,4 +201,12 @@ input.letter {
 .petrified{
 	pointer-events: none;
 	user-select: none;
+}
+
+.row-number{
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	font-size: 6px;
+	color: #535353;
 }

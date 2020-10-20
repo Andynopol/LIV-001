@@ -42,6 +42,7 @@ class CorssWords{
 		this.addRows();
 		this.addWords();
 		this.enableCells();
+		this.numberCells();
 		this.enableVerify();
 	}
 
@@ -88,6 +89,17 @@ class CorssWords{
 			cell.setAttribute('letter', letter);
 			cell.appendChild(input);
 			row.appendChild(cell);
+		}
+		
+	}
+
+	numberCells(){
+		for(var row of this.rows){
+			const firstCell = row.getElementsByClassName('cell')[0];
+			const num = document.createElement('div');
+			num.classList.add('row-number');
+			num.innerText = this.rows.indexOf(row)+1;
+			firstCell.appendChild(num);
 		}
 	}
 
