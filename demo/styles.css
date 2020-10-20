@@ -119,27 +119,25 @@ button:active {
 	margin: 0 10px;
 }
 
-.cell {
+.blank{
 	width: 30px;
-	height: 30px;
+	height:30px;
 	background-color: white;
 	border: 1px solid #000;
-	/* display: flex;
-	justify-content: center;
-    align-items: center; */
 	position: relative;
+	visibility: hidden;
+	pointer-events: none;
 }
 
-.cell + .cell {
+.cell {
+	visibility: visible;
+	pointer-events: all;
+}
+
+.blank + .blank {
 	border-left: none;
 }
 
-
-
-.cell.empty {
-	visibility: hidden;
-	user-select: none;
-}
 
 .disabled {
 	opacity: 0.4;
@@ -150,6 +148,7 @@ button:active {
 	visibility: hidden;
 	opacity: 0;
 	pointer-events: none;
+	user-select: none;
 }
 
 input {
@@ -172,12 +171,4 @@ input.letter {
 
 .wider {
 	width: 100px;
-}
-
-.line.correct>.full{
-	background-color: green;
-}
-
-.line.incorrect>.full{
-	background-color: red;
 }

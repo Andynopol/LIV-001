@@ -1,15 +1,7 @@
 var timeout;
 var errorBar = document.getElementById("errorBar");
-var lines = document.getElementsByClassName("line");
-var positioners = document.getElementsByClassName("positioner");
 const root = document.getElementById("root");
-
-const add = document.getElementById("addRow");
-const remove = document.getElementById("removeRow");
-const controls = document.getElementById("controls");
-const start = document.getElementById("start");
-const verify = document.getElementById("verify");
-verify.classList.add('disabled');
+const controls = document.getElementById("controls").getElementsByTagName('button');
 
 // <-- DEFAULT FUNCTIONS -->
 
@@ -30,440 +22,265 @@ function hideErrorBar() {
 
 // <-- DEFAULT FUNCTIONS -->
 
-//? <-- SECONDARY FUNCTIONS -->
+//! <-- Object -->
 
-function checkLeft(button) {
-	if (button.classList.contains("right")) {
-		button.parentElement
-			.getElementsByClassName("left")[0]
-			.classList.remove("disabled");
-	} else {
-		if (
-			!button.parentElement
-				.getElementsByClassName("line")[0]
-				.firstChild.classList.contains("empty")
-		) {
-			button.classList.add("disabled");
-		} else {
-			button.classList.remove("disabled");
-		}
-	}
-}
-
-function clearLine(line) {
-	line.innerHTML = "";
-}
-
-function injectInLine(line, arr) {
-	if (Array.isArray(arr)) {
-		line.innerHTML = "";
-		for (var i = 0; i < arr.length; i++) {
-			const elem = arr[i];
-			line.appendChild(elem);
-		}
-	}
-}
-
-function linkPositionerOnCurrentRow(row) {
-	const currentPositioners = row.getElementsByClassName("positioner");
-	for (var i = 0; i < currentPositioners.length; i++) {
-		linkPositioner(currentPositioners[i]);
-	}
-}
-
-function linkPositioner(pos) {
-	pos.addEventListener("click", function (e) {
-		const row = this.parentElement;
-		const line = row.getElementsByClassName("line")[0];
-		const cells = line.getElementsByClassName("cell");
-		const arr = [...cells];
-		if (this.classList.contains("left")) {
-			if (cells[0].classList.contains("empty")) {
-				arr.shift();
-			}
-			clearLine(line);
-			injectInLine(line, arr);
-			checkLeft(this);
-		} else if (this.classList.contains("right")) {
-			const newCell = document.createElement("div");
-			newCell.classList.add("cell", "empty");
-			arr.unshift(newCell);
-			injectInLine(line, arr);
-			checkLeft(this);
-		}
-	});
-}
-
-function focustLastInput(line) {
-	const lastInput = line.querySelector(".full:last-child > .letter");
-	lastInput.focus();
-}
-
-function focusNextInput(cell) {
-	const line = cell.parentElement;
-	const cells = [...line.getElementsByClassName("full")];
-	const nextCellInput = cells[cells.indexOf(cell) + 1].querySelector(
-		".letter:first-child",
-	);
-	nextCellInput.focus();
-}
-
-function deleteLastCell(line) {
-	const cells = [...line.getElementsByClassName("cell")];
-	console.log(cells);
-	if(cells.length>1)
-	{
-		cells.pop();
-		injectInLine(line, cells);
-	}
-}
-
-function isLastCell(line, cell) {
-	const lastCell = line.querySelector(".full:last-child");
-	if (lastCell === cell) {
-		return true;
-	}
-	return false;
-}
-
-function insertNewCell(line) {
-	const newCell = document.createElement("div");
-	newCell.classList.add("cell", "full");
-	const newInput = document.createElement("input");
-	newInput.type = "text";
-	newInput.classList.add("letter");
-	newInput.size = 1;
-	newInput.maxlength = 1;
-	newCell.appendChild(newInput);
-	line.appendChild(newCell);
-	enableCurrentCell(newCell);
-	focustLastInput(line);
-}
-
-function cellKeyDownOnEdit(ev) {
-	const currentValue = this.value;
-	const cell = this.parentElement;
-	const line = cell.parentElement;
-
-	if (ev.keyCode === 13) {
-		ev.preventDefault();
-		if (currentValue === "") {
-			deleteLastCell(line);
-		} else {
-			this.blur();
-		}
-	} else {
-		this.value = "";
+class CrossWrodsEditor{
+	constructor(root, controls){
+		this.root = root;
+		this.controls = controls;
+		this.rows = null;
+		this.add = null;
+		this.updateRows();
+		this.setAdd();
 	}
 
-	if (ev.keyCode === 8) {
-		ev.preventDefault();
-		if (isLastCell(line, cell) && line.querySelectorAll(".full").length !== 1) {
-			if (currentValue === "") {
-				ev.preventDefault();
-				deleteLastCell(line);
-				focustLastInput(line);
-			}
-		}
-	}
-}
-
-function cellKeyUpOnEdit(ev) {
-	const cell = this.parentElement;
-	const line = cell.parentElement;
-	var key = ev.keyCode;
-	if ((key >= 65 && key <= 90) || key == 32) {
-		if (isLastCell(line, cell)) {
-			if(this.value!==""){
-				insertNewCell(line);
-			}
-			
-		} else {
-			focusNextInput(cell);
-		}
-	} else if (key === 13) {
-		ev.preventDefault();
-		this.value = this.value;
-	} else if (ev.keyCode === 8) {
-		ev.preventDefault();
-	} else {
-		this.value = "";
-	}
-}
-
-function enableCurrentCell(cell) {
-	const input = cell.getElementsByClassName("letter")[0];
-	input.addEventListener("keydown", cellKeyDownOnEdit);
-	input.addEventListener("keyup", cellKeyUpOnEdit);
-}
-
-function enableCellsOnCurrentLine(line) {
-	const cells = [...line.getElementsByClassName("full")];
-	for (var i = 0; i < cells.length; i++) {
-		const cell = cells[i];
-		enableCurrentCell(cell);
-	}
-}
-
-function disableControls(controls) {
-	const btns = controls.getElementsByTagName("button");
-	for (var i = 0; i < btns.length; i++) {
-		const btn = btns[i];
-		if (btn.id !== "start") {
-			btn.classList.add("disabled");
-		}
+	updateRows(){
+		this.rows = [...this.root.getElementsByClassName('row')];
 	}
 
-	const positioners = document.getElementsByClassName("positioner");
-	for (var i = 0; i < positioners.length; i++) {
-		const positioner = positioners[i];
-		positioner.classList.add("invisible");
-	}
-}
-
-function enableControls(controls) {
-	const btns = controls.getElementsByTagName("button");
-	for (var i = 0; i < btns.length; i++) {
-		const btn = btns[i];
-		if (btn.classList.contains("disabled")) {
-			btn.classList.remove("disabled");
-		}
-	}
-
-	const positioners = document.getElementsByClassName("positioner");
-	for (var i = 0; i < positioners.length; i++) {
-		const positioner = positioners[i];
-		positioner.classList.remove("invisible");
-	}
-}
-
-function emptyCells(lines) {
-	for (var i = 0; i < lines.length; i++) {
-		const line = lines[i];
-		emptyCellsOnCurrentLine(line);
-	}
-}
-
-function emptyCellsOnCurrentLine(line) {
-	var word = "";
-	const cells = line.getElementsByClassName("full");
-	for (var i = 0; i < cells.length; i++) {
-		const cell = cells[i];
-		const input = cell.querySelector("input:first-child");
-		if (isLastCell(line, cell) && input.value === "") {
-			deleteLastCell(line);
-		} else {
-			if (input.value !== "") {
-				word = word + input.value;
-				cell.setAttribute('letter', input.value);
-				input.value = "";
-			} else {
-				forcedRefill(line, word);
-				alert("No cells can be empty!");
-				stopGame(true);
+	setAdd(){
+		for(var item of controls){
+			if(item.id === 'addRow'){
+				this.add = item;
 				break;
 			}
 		}
 	}
-	console.log(word);
-	line.setAttribute("word", word);
-}
 
-function forcedRefill(line, word) {
-	const cells = line.getElementsByClassName("full");
-	for (var i = 0; i < word.length; i++) {
-		const cell = cells[i];
-		const input = cell.querySelector("input:first-child");
-		input.value = word[i];
-	}
-}
-
-function refillCells(lines) {
-	for (var i = 0; i < lines.length; i++) {
-		const line = lines[i];
-		refillCellsOnCurrentLine(line);
-	}
-}
-
-function refillCellsOnCurrentLine(line) {
-	const cells = line.getElementsByClassName("full");
-	line.classList.remove('correct', 'incorrect');
-	for (var i = 0; i < cells.length; i++) {
-		const cell = cells[i];
-		const input = cell.querySelector("input:first-child");
-		input.value = cell.getAttribute('letter');
-	}
-}
-
-
-
-function verifyLines(lines){
-	for(var line of lines){
-		verifyCells(line);
-	}
-}
-
-function verifyCells(line){
-	const cells = line.getElementsByClassName('full');
-	var correct = 0;
-	for(var cell of cells){
-		if(verifyCell(cell)){
-			correct++;
+	bindCells(){
+		for(var row of this.rows){
+			const line = row.getElementsByClassName('line')[0];
+			const cells = line.getElementsByClassName('cell');
+			for(var cell of cells){
+				this.bindCell(cell);
+			}
 		}
 	}
-	if(correct === cells.length)
-	{
-		line.classList.add('correct');
+
+	bindCell(cell){
+		const that = this;
+		const input = cell.getElementsByClassName("letter")[0];
+		input.addEventListener("keydown", function(ev){
+			that.cellKeyDown(ev, this);
+		});
+		input.addEventListener("keyup", function(ev){
+			that.cellKeyUp(ev, this);
+		});
 	}
-	else{
-		line.classList.add('incorrect');
-	}
-}
 
-function verifyCell(cell){
-	const input = cell.getElementsByTagName("input")[0];
-	if(input.value === cell.getAttribute('letter')){
-		return true;
-	}
-	return false;
-}
-
-// ? <-- SECONDARY FUNCTIONS -->
-
-// ! <-- Main functions -->
-
-
-function solve(){
-	const lines = document.getElementsByClassName('line');
-	verifyLines(lines);
-}
-
-function linkVerify(verify){
-	verify.addEventListener('click', solve);
-}
-
-function enableCells(lines) {
-	for (var i = 0; i < lines.length; i++) {
-		const line = lines[i];
-		enableCellsOnCurrentLine(line);
-	}
-}
-
-function disableCells() {
-	const lines = document.getElementsByClassName("line");
-	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i];
-		const newLine = line.cloneNode(true);
-		const row = line.parentNode;
-		console.log(row);
-		row.replaceChild(newLine, line);
-	}
-}
-
-function enablePositioners(positioners) {
-	for (var i = 0; i < positioners.length; i++) {
-		const positioner = positioners[i];
-		linkPositioner(positioner);
-	}
-}
-
-function enableAddRemove(add, remove) {
-	add.addEventListener("click", function (e) {
-		const row = document.createElement("div");
-		const left = document.createElement("div");
-		const line = document.createElement("div");
-		const cell = document.createElement("div");
-		const input = document.createElement("input");
-		const right = document.createElement("div");
-
-		//left button
-		left.classList.add("left", "positioner", "disabled");
-		left.innerText = "<";
-		row.appendChild(left);
-
-		//right
-		right.classList.add("right", "positioner");
-		right.innerText = ">";
-		row.appendChild(right);
-
-		//line
-		line.classList.add("line");
-		row.appendChild(line);
-
-		//cell
-		cell.classList.add("cell", "full");
-		line.appendChild(cell);
-
-		//input
-		input.type = "text";
-		input.classList.add("letter");
-		input.size = 1;
-		input.maxlength = 1;
-		cell.appendChild(input);
-
-		
-
-		//add to root
-		row.classList.add("row");
-		root.appendChild(row);
-
-		//link events
-		enableCellsOnCurrentLine(line);
-		linkPositionerOnCurrentRow(row);
-	});
-
-	remove.addEventListener("click", function () {
-		const lastRow = root.querySelector(".row:last-child");
-		if (lastRow !== root.querySelector(".row:first-child")) {
-			root.removeChild(lastRow);
+	isLastCell(line, cell){
+		const cells = line.getElementsByClassName('cell');
+		if(cells[cells.length-1] === cell){
+			return true;
 		}
-	});
-}
+		return false;
+	}
 
-function stopGame(forced) {
-	if (forced) {
-		start.innerText = "START";
-		start.removeEventListener("click", stopGame);
-		start.addEventListener("click", startGame);
-		end(forced);
-	} else {
-		this.innerText = "START";
-		this.removeEventListener("click", stopGame);
-		this.addEventListener("click", startGame);
-		end();
+	deleteLastCell(line){
+		line.removeChild(line.childNodes[line.childNodes.length - 1]);
+	}
+
+	focusLastInput(line){
+		const lastCell = line.getElementsByClassName('cell')[line.getElementsByClassName('cell').length - 1];
+		const input = lastCell.getElementsByClassName('letter')[0];
+		input.focus();
+	}
+
+	focusNextInput(cell){
+		const line = cell.parentElement;
+		const cells = [...line.getElementsByClassName('cell')];
+		const nextInput = cells[cells.indexOf(cell) + 1].getElementsByTagName('input')[0];
+		nextInput.focus();
+	}
+
+	insertNewCell(line){
+		const newCell = document.createElement('div');
+		const newInput = document.createElement('input');
+		newInput.classList.add('letter');
+		newInput.type = 'text';
+		newInput.name = 'letter';
+		newInput.size = '1';
+		newInput.maxLength = '1';
+		newCell.classList.add('blank', 'cell');
+		newCell.appendChild(newInput);
+		line.appendChild(newCell);
+
+		this.bindCell(newCell);
+		newInput.focus();
+	}
+
+
+	cellKeyDown(ev, input) {
+		const currentValue = input.value;
+		const cell = input.parentElement;
+		const line = cell.parentElement;
+	
+		if (ev.keyCode === 13) {
+			ev.preventDefault();
+			if (currentValue === "") {
+				this.deleteLastCell(line);
+			} else {
+				input.blur();
+			}
+		} else {
+			input.value = "";
+		}
+	
+		if (ev.keyCode === 8) {
+			ev.preventDefault();
+			if (this.isLastCell(line, cell) && line.querySelectorAll(".cell").length !== 1) {
+				if (currentValue === "") {
+					ev.preventDefault();
+					this.deleteLastCell(line);
+					this.focusLastInput(line);
+				}
+			}
+		}
+	}
+	
+	cellKeyUp(ev, input) {
+		const cell = input.parentElement;
+		const line = cell.parentElement;
+		var key = ev.keyCode;
+		if ((key >= 65 && key <= 90) || key == 32) {
+			if (this.isLastCell(line, cell)) {
+				if(input.value!==""){
+					this.insertNewCell(line);
+				}
+				
+			} else {
+				this.focusNextInput(cell);
+			}
+		} else if (key === 13) {
+			ev.preventDefault();
+			input.value = input.value;
+		} else if (ev.keyCode === 8) {
+			ev.preventDefault();
+		} else {
+			input.value = "";
+		}
+	}
+
+	bindPositioners(){
+		for(var row of this.rows){
+			this.bindPositionersOnCurrentRow(row);
+		}
+	}
+
+	bindPositionersOnCurrentRow(row){
+		const positioners = row.getElementsByClassName('positioner');
+		for(var pos of positioners){
+			if(pos.classList.contains('left')){
+				this.bindLeft(pos);
+			}else if(pos.classList.contains('right')){
+				this.bindRight(pos);
+			}
+		}
+	}
+
+	clearLine(line){
+		line.innerHTML = '';
+	}
+
+	injectInLine(line, blanks){
+		for(var blank of blanks){
+			line.appendChild(blank);
+		}
+	}
+
+	checkLeft(left, blanks){
+		if(blanks[0].classList.contains('cell')){
+			left.classList.add('disabled');
+		}
+		else{
+			left.classList.remove('disabled');
+		}
+	}
+
+	bindLeft(positioner){
+		const that = this;
+		positioner.addEventListener('click', function(){
+			const currentRow = this.parentElement;
+			const currentLine = currentRow.getElementsByClassName('line')[0];
+			const blanks = [...currentLine.getElementsByClassName('blank')];
+			if (!blanks[0].classList.contains("cell")) {
+				blanks.shift();
+			}
+			that.clearLine(currentLine);
+			that.injectInLine(currentLine, blanks);
+			that.checkLeft(this, blanks);
+		});
+	}
+
+	bindRight(positioner){
+		const that = this;
+		positioner.addEventListener('click', function(){
+			const currentRow = this.parentElement;
+			const currentLine = currentRow.getElementsByClassName('line')[0];
+			const blanks = [...currentLine.getElementsByClassName('blank')];
+			const newCell = document.createElement("div");
+			const left = currentRow.getElementsByClassName('left')[0];
+			newCell.classList.add("blank");
+			blanks.unshift(newCell);
+			that.clearLine(currentLine);
+			that.injectInLine(currentLine, blanks);
+			that.checkLeft(left, blanks);
+		});
+	}
+
+	bindAdd(){
+		const that = this;
+		this.add.addEventListener('click', function(){
+
+			//createing the elements
+			const newRow = document.createElement('div');
+			const newLeft = document.createElement('div');
+			const newRight = document.createElement('div');
+			const newLine = document.createElement('div');
+			const cell = document.createElement('div');
+			const input = document.createElement('input');
+
+			
+			//adding the classes and attributes
+			newRow.classList.add('row');
+			newLeft.classList.add('left', 'positioner', 'disabled');
+			newLeft.innerText = '<';
+			newRight.classList.add('right', 'positioner');
+			newRight.innerText = '>';
+			newLine.classList.add('line');
+			cell.classList.add('cell','blank');
+			input.classList.add('letter');
+			input.type = 'text';
+			input.name = 'letter';
+			input.size = '1';
+			input.maxLength = '1';
+
+			//appending to root
+			that.root.appendChild(newRow);
+			newRow.appendChild(newLeft);
+			newRow.appendChild(newRight);
+			newRow.appendChild(newLine);
+			newLine.appendChild(cell);
+			cell.appendChild(input);
+
+			//binding new elements
+
+			that.updateRows();
+			that.bindPositionersOnCurrentRow(newRow);
+			that.bindCell(cell);
+
+			//TODO add the remove current row button
+
+		});
+	}
+
+	start(){
+		// this is called to start the editing
+		this.bindCells();
+		this.bindPositioners();
+		this.bindAdd();
 	}
 }
 
-function startGame() {
-	this.innerText = "STOP";
-	this.removeEventListener("click", startGame);
-	this.addEventListener("click", stopGame);
-	play();
-}
-
-function enableStart(start) {
-	start.addEventListener("click", startGame);
-}
-
-function end() {
-	enableControls(controls);
-	const lines = root.getElementsByClassName("line");
-	refillCells(lines);
-	enableCells(lines);
-	verify.classList.add('disabled');
-}
-
-function play() {	
-	disableControls(controls);
-	emptyCells(root.getElementsByClassName("line"));
-	disableCells();
-	verify.classList.remove('disabled');
-}
-
-// ! <-- MAIN FUNCTIONS -->
-
-enablePositioners(positioners);
-enableCells(lines);
-enableAddRemove(add, remove);
-enableStart(start);
-linkVerify(verify);
+const editor = new CrossWrodsEditor(root, controls);
+editor.start();

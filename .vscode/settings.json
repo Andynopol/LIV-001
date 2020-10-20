@@ -1,0 +1,12 @@
+{
+    "editor.formatOnSave": true,
+    "typescript.format.placeOpenBraceOnNewLineForFunctions": true,
+    "javascript.format.placeOpenBraceOnNewLineForFunctions": true,
+    "prettier.trailingComma": "all",
+    "prettier.withNodeModules": true,
+    "prettier.useTabs": true,
+    "prettier.vueIndentScriptAndStyle": true,
+    "prettier.requireConfig": true,
+    "prettier.resolveGlobalModules": true,
+    "prettier.singleQuote": true
+}
