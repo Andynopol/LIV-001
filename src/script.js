@@ -332,11 +332,11 @@ class CrossWrodsEditor{
 	}
 
 	bindNumberOfAttempts(){
-		
+
 	}
 
 	bindGenerate(){
-
+		
 	}
 
 	start(){
