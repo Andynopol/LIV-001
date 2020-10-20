@@ -161,7 +161,7 @@ class CorssWords{
 
 	enableInput(input){
 		const that = this;
-		input.addEventListener("keydown", function(ev){
+		input.addEventListener("keydown input", function(ev){
 			const currentValue = this.value;
 			const cell = this.parentElement;
 			const row = cell.parentElement;
@@ -190,7 +190,7 @@ class CorssWords{
 				}	
 			}
 		});
-		input.addEventListener("keyup", function(ev){
+		input.addEventListener("keyup input", function(ev){
 
 			const cell = this.parentElement;
 			const row = cell.parentElement;
