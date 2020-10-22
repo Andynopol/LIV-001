@@ -236,25 +236,18 @@ class CorssWords{
 			});
 		}
 		else{
-			input.addEventListener('input', function(ev){
-				const cell = this.parentElement;
-				const row = cell.parentElement;
-				const preValue = this.getAttribute('prevalue');
-				if(preValue){
-					const preValueArray = [...preValue];
-					if([...this.value].length > preValueArray.length){
-						this.value = preValue[1];
-						this.setAttribute('Value', this.value);
-						that.focusNextInput(cell);
-					}
-				}
-				else{
-					this.setAttribute('prevalue', this.value);
-				}	
-			});
+			// input.addEventListener('input', function(ev){
+			// 	const cell = this.parentElement;
+			// 	const row = cell.parentElement;
+			// 	const preValue = this.getAttribute('prevalue');
+				
+			// });
 	
 			input.addEventListener('change', function(ev){
-				console.log([...this.value]);
+				if([...this.value].length >= 2){
+					this.value = [...this.value][this.value.length-1];
+					that.focusNextInput(cell);
+				}	
 			});
 		}
 		
