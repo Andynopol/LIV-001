@@ -80,7 +80,6 @@ class CorssWords{
 			input.classList.add('letter');
 			input.size = '1';
 			input.maxlength = '1';
-			input.setAttribute('prevalue', '');
 			cell.classList.add('blank','cell');
 			cell.setAttribute('letter', letter);
 			cell.appendChild(input);
@@ -237,25 +236,23 @@ class CorssWords{
 		}
 		else{
 			input.addEventListener('input', function(ev){
+				console.log(ev);
 				const cell = this.parentElement;
 				const row = cell.parentElement;
-				const preValue = this.getAttribute('prevalue');
-				if(preValue){
-					const preValueArray = [...preValue];
-					if([...this.value].length >= preValueArray.length){
-						this.value = preValueArray[preValueArray - 1];
-						this.setAttribute('prevalue', this.value);
+				if(ev.inputType === 'insertText'){
+					this.value = [...this.value][this.value.length - 1];
+					if(!that.isLastCell(row, cell))
+					{
 						that.focusNextInput(cell);
 					}
 				}
-				else{
-					this.setAttribute('prevalue', this.value);
-					that.focusNextInput(cell);
-				}	
-			});
-	
-			input.addEventListener('change', function(ev){
-				console.log([...this.value]);
+				
+				if(ev.inputType === 'deleteContentBackward'){
+					if(!that.isFirstCell(row, cell)){
+						that.focusPrevInput(cell);
+					}
+				}
+				
 			});
 		}
 		
