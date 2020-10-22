@@ -1,4 +1,5 @@
 const data = require('./data');
+const isMobile = require('./mobile');
 const root = document.getElementById('root');
 const controls = [...document.getElementById('controls').getElementsByTagName('button')];
 
@@ -62,10 +63,11 @@ class CorssWords{
 			const letter = letters[i];
 			const cell = document.createElement('div');
 			const input = document.createElement('input');
-			input.setAttribute('type', 'text');
-			input.setAttribute('class', 'letter');
-			input.setAttribute('size', '1');
-			input.setAttribute('maxlength', '1');
+			input.type = 'text';
+			input.classList.add('letter');
+			input.size = '1';
+			input.maxlength = '1';
+			input.setAttribute('Value', '');
 			cell.classList.add('blank','cell');
 			cell.setAttribute('letter', letter);
 			cell.appendChild(input);
@@ -156,72 +158,89 @@ class CorssWords{
 	enableCurrentCell(cell){
 		console.log(cell);
 		const input = cell.firstChild;
-		this.enableInput(input)
+		this.enableInput(input);
 	}
 
 	enableInput(input){
 		const that = this;
-		input.addEventListener("keydown", function(ev){
-			const currentValue = this.value;
-			const cell = this.parentElement;
-			const row = cell.parentElement;
-			var key = ev.keyCode;
-
-			if (key === 13) {
-				ev.preventDefault();
-				that.focusNextRow(this.parentElement.parentElement);
-			}
-			else{
-				this.value = "";
-			}
-		
-			if (key === 8) {
-				ev.preventDefault();
-				if(that.isFirstCell(row, cell))
-				{
-					this.value = '';
-				}else{
-					if(currentValue === ''){
-						that.focusPrevInput(cell);
-					}
-					else{
-						this.value = '';
-					}
-				}	
-			}
-		});
-		input.addEventListener("keyup", function(ev){
-
-			const cell = this.parentElement;
-			const row = cell.parentElement;
-			var key = ev.keyCode;
-			if ((key >= 65 && key <= 90) || key == 32) {
-				if(that.isLastCell(row, cell)){
-					
+		if(!isMobile()){
+			input.addEventListener("keydown", function(ev){
+				const currentValue = this.value;
+				const cell = this.parentElement;
+				const row = cell.parentElement;
+				var key = ev.keyCode;
+	
+				if (key === 13) {
+					ev.preventDefault();
+					that.focusNextRow(this.parentElement.parentElement);
 				}
 				else{
-					if(this.value !== ''){
-						that.focusNextInput(cell);
-					}
-					
+					this.value = "";
 				}
-			} else if (key === 13) {
-				ev.preventDefault();
-				this.value = this.value;
-			} else if (ev.keyCode === 8) {
-				ev.preventDefault();
-			} else {
-				ev.preventDefault();
-			}
-		});
+			
+				if (key === 8) {
+					ev.preventDefault();
+					if(that.isFirstCell(row, cell))
+					{
+						this.value = '';
+					}else{
+						if(currentValue === ''){
+							that.focusPrevInput(cell);
+						}
+						else{
+							this.value = '';
+						}
+					}	
+				}
+			});
+			input.addEventListener("keyup", function(ev){
+	
+				const cell = this.parentElement;
+				const row = cell.parentElement;
+				var key = ev.keyCode;
+				if ((key >= 65 && key <= 90) || key == 32) {
+					if(that.isLastCell(row, cell)){
+						
+					}
+					else{
+						if(this.value !== ''){
+							that.focusNextInput(cell);
+						}
+						
+					}
+				} else if (key === 13) {
+					ev.preventDefault();
+					this.value = this.value;
+				} else if (ev.keyCode === 8) {
+					ev.preventDefault();
+				} else {
+					ev.preventDefault();
+				}
+			});
 
-		input.addEventListener('input', function(ev){
-			console.log([...this.value]);
-		});
+			input.addEventListener('change', function(ev){
+				console.log(ev);
+			});
+		}
+		else{
+			input.addEventListener('input', function(ev){
+				const cell = this.parentElement;
+				const row = cell.parentElement;
+				const preValue = [...this.getAttribute('Value')];
+				if([...this.value].length > preValue.length){
+					this.value = preValue[1];
+					this.setAttribute('Value', this.value);
+					that.focusNextInput(cell);
+				}
+			});
+	
+			input.addEventListener('change', function(ev){
+				console.log([...this.value]);
+			});
+		}
+		
 
-		input.addEventListener('change', function(ev){
-			console.log([...this.value]);
-		});
+		
 	}
 
 	setVerify(){
