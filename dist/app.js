@@ -80,7 +80,7 @@ class CorssWords{
 			input.classList.add('letter');
 			input.size = '1';
 			input.maxlength = '1';
-			input.setAttribute('Value', '');
+			input.setAttribute('prevalue', '');
 			cell.classList.add('blank','cell');
 			cell.setAttribute('letter', letter);
 			cell.appendChild(input);
@@ -239,12 +239,18 @@ class CorssWords{
 			input.addEventListener('input', function(ev){
 				const cell = this.parentElement;
 				const row = cell.parentElement;
-				const preValue = [...this.getAttribute('Value')];
-				if([...this.value].length > preValue.length){
-					this.value = preValue[1];
-					this.setAttribute('Value', this.value);
-					that.focusNextInput(cell);
+				const preValue = this.getAttribute('prevalue');
+				if(preValue){
+					const preValueArray = [...preValue];
+					if([...this.value].length > preValueArray.length){
+						this.value = preValue[1];
+						this.setAttribute('Value', this.value);
+						that.focusNextInput(cell);
+					}
 				}
+				else{
+					this.setAttribute('prevalue', this.value);
+				}	
 			});
 	
 			input.addEventListener('change', function(ev){
