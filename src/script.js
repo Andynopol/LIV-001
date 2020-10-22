@@ -223,22 +223,23 @@ class CorssWords{
 			});
 		}
 		else{
-			// input.addEventListener('input', function(ev){
-			// 	const cell = this.parentElement;
-			// 	const row = cell.parentElement;
-			// 	const preValue = this.getAttribute('prevalue');
-			// 	if(preValue){
-			// 		const preValueArray = [...preValue];
-			// 		if([...this.value].length > preValueArray.length){
-			// 			this.value = preValue[1];
-			// 			this.setAttribute('prevalue', this.value);
-			// 			that.focusNextInput(cell);
-			// 		}
-			// 	}
-			// 	else{
-			// 		this.setAttribute('prevalue', this.value);
-			// 	}	
-			// });
+			input.addEventListener('input', function(ev){
+				const cell = this.parentElement;
+				const row = cell.parentElement;
+				const preValue = this.getAttribute('prevalue');
+				if(preValue){
+					const preValueArray = [...preValue];
+					if([...this.value].length >= preValueArray.length){
+						this.value = preValueArray[preValueArray - 1];
+						this.setAttribute('prevalue', this.value);
+						that.focusNextInput(cell);
+					}
+				}
+				else{
+					this.setAttribute('prevalue', this.value);
+					that.focusNextInput(cell);
+				}	
+			});
 	
 			input.addEventListener('change', function(ev){
 				console.log([...this.value]);
