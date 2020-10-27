@@ -1,3 +1,3 @@
-const data = {"words":[{"word":"cascada","blanks":0},{"word":"sarcastic","blanks":4},{"word":"cercetae","blanks":1},{"word":"elefant","blanks":4},{"word":"Norme","blanks":4},{"word":"cadran","blanks":2},{"word":"lasciv","blanks":0},{"word":"calcule","blanks":3}],"rows":8,"vertical":false,"numOfAtemps":1};
+const data = {"words":[{"word":"retrogradare","blanks":0},{"word":"accept","blanks":3},{"word":"ceata","blanks":3},{"word":"munte","blanks":2},{"word":"capcana","blanks":2}],"rows":5,"vertical":false,"numOfAtemps":5}
 
 module.exports = data;
