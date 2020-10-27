@@ -241,6 +241,10 @@ class CorssWords{
 				}
 				
 			});
+
+			input.addEventListener('*', function(ev){
+				console.log(ev);
+			});
 		}
 		
 
