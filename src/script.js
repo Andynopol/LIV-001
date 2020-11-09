@@ -1,7 +1,5 @@
 const data = require( './data' );
 const MobileDetector = require( './mobile' );
-console.log( MobileDetector.isMobile );
-console.log( MobileDetector.isAndroid );
 const root = document.getElementById( 'root' );
 const controls = [ ...document.getElementById( 'controls' ).getElementsByTagName( 'button' ) ];
 
@@ -73,9 +71,6 @@ class CorssWords {
 			cell.setAttribute( 'letter', letter );
 			cell.appendChild( input );
 			row.appendChild( cell );
-			if ( MobileDetector.isAndroid ) {
-				input.setAttribute( 'salt', true );
-			}
 		}
 
 	}
@@ -130,10 +125,6 @@ class CorssWords {
 			".letter:first-child",
 		);
 		prevCellInput.focus();
-		if ( MobileDetector.isAndroid && prevCellInput.value === '' ) {
-			prevCellInput.setAttribute( 'salt', 'true' );
-			prevCellInput.value = ' ';
-		}
 	}
 
 	focusNextRow( row ) {
@@ -244,7 +235,6 @@ class CorssWords {
 						that.focusPrevInput( cell );
 					} else {
 						input.value = '';
-						input.setAttribute( 'salt', true );
 					}
 				} else {
 					input.value = output.join( '' );
