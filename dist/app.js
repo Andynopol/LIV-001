@@ -1,5 +1,5 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-const data = {"words":[{"word":"retrogradare","blanks":0},{"word":"accept","blanks":3},{"word":"ceata","blanks":3},{"word":"munte","blanks":2},{"word":"capcana","blanks":2}],"rows":5,"vertical":false,"numOfAtemps":5}
+const data = { "words": [ { "word": "retrogradare", "blanks": 0 }, { "word": "accept", "blanks": 3 }, { "word": "ceata", "blanks": 3 }, { "word": "munte", "blanks": 2 }, { "word": "capcana", "blanks": 2 } ], "rows": 5, "vertical": false, "numOfAtemps": 5 };
 
 module.exports = data;
 },{}],2:[function(require,module,exports){
@@ -11,15 +11,15 @@ mobile = function() {
 
 module.exports = mobile;
 },{}],3:[function(require,module,exports){
-const data = require('./data');
-const isMobile = require('./mobile');
-const root = document.getElementById('root');
-const controls = [...document.getElementById('controls').getElementsByTagName('button')];
+const data = require( './data' );
+const isMobile = require( './mobile' );
+const root = document.getElementById( 'root' );
+const controls = [ ...document.getElementById( 'controls' ).getElementsByTagName( 'button' ) ];
 
-class CorssWords{
-	constructor(data, root, controls){
+class CorssWords {
+	constructor( data, root, controls ) {
 		this.data = data;
-		this. root = root;
+		this.root = root;
 		this.rows = null;
 		this.controls = controls;
 		this.verify = null;
@@ -27,10 +27,10 @@ class CorssWords{
 		this.setVerify();
 		this.setRetry();
 		this.atempts = 1;
-		console.log(this.retry);
+		console.log( this.retry );
 	}
 
-	generate(){
+	generate() {
 		this.addRows();
 		this.addWords();
 		this.enableCells();
@@ -38,333 +38,318 @@ class CorssWords{
 		this.enableVerify();
 	}
 
-	addRows(){
-		for(var i = 0; i<this.data.rows; i++){
-			const row = document.createElement('div');
-			row.classList.add('row');
-			this.root.appendChild(row);
+	addRows() {
+		for ( var i = 0; i < this.data.rows; i++ ) {
+			const row = document.createElement( 'div' );
+			row.classList.add( 'row' );
+			this.root.appendChild( row );
 		}
-		this.rows = [...this.root.getElementsByClassName('row')];
+		this.rows = [ ...this.root.getElementsByClassName( 'row' ) ];
 	}
 
-	addWords(){
+	addWords() {
 		const words = this.data.words;
-		
-		for(let i = 0; i < words.length; i++){
-			const word = words[i];
-			const row = this.rows[i];
-			this.addBlanks(word, row);
-			this.addCells(word, row);
+
+		for ( let i = 0; i < words.length; i++ ) {
+			const word = words[ i ];
+			const row = this.rows[ i ];
+			this.addBlanks( word, row );
+			this.addCells( word, row );
 		}
 	}
 
-	addBlanks(word, row){
+	addBlanks( word, row ) {
 		const blanks = word.blanks
-		for(var i = 0; i<blanks; i++){
-			const blank = document.createElement('div');
-			blank.classList.add('blank');
-			row.appendChild(blank);
-			if(i === blanks-1){
+		for ( var i = 0; i < blanks; i++ ) {
+			const blank = document.createElement( 'div' );
+			blank.classList.add( 'blank' );
+			row.appendChild( blank );
+			if ( i === blanks - 1 ) {
 				blank.style.borderRight = 'none';
 			}
 		}
 	}
-	
-	addCells(word, row){
-		const letters = [...word.word];
-		for(var i = 0; i<letters.length; i++){
-			const letter = letters[i];
-			const cell = document.createElement('div');
-			const input = document.createElement('input');
+
+	addCells( word, row ) {
+		const letters = [ ...word.word ];
+		for ( var i = 0; i < letters.length; i++ ) {
+			const letter = letters[ i ];
+			const cell = document.createElement( 'div' );
+			const input = document.createElement( 'input' );
 			input.type = 'text';
-			input.classList.add('letter');
+			input.classList.add( 'letter' );
 			input.size = '1';
 			input.maxlength = '1';
-			cell.classList.add('blank','cell');
-			cell.setAttribute('letter', letter);
-			cell.appendChild(input);
-			row.appendChild(cell);
+			cell.classList.add( 'blank', 'cell' );
+			cell.setAttribute( 'letter', letter );
+			cell.appendChild( input );
+			row.appendChild( cell );
 		}
-		
+
 	}
 
-	numberCells(){
-		for(var row of this.rows){
-			const firstCell = row.getElementsByClassName('cell')[0];
-			const num = document.createElement('div');
-			num.classList.add('row-number');
-			num.innerText = this.rows.indexOf(row)+1;
-			firstCell.appendChild(num);
+	numberCells() {
+		for ( var row of this.rows ) {
+			const firstCell = row.getElementsByClassName( 'cell' )[ 0 ];
+			const num = document.createElement( 'div' );
+			num.classList.add( 'row-number' );
+			num.innerText = this.rows.indexOf( row ) + 1;
+			firstCell.appendChild( num );
 		}
 	}
 
-	isLastCell(row, cell) {
-		const lastCell = row.querySelector(".cell:last-child");
-		if (lastCell === cell) {
+	isLastCell( row, cell ) {
+		const lastCell = row.querySelector( ".cell:last-child" );
+		if ( lastCell === cell ) {
 			return true;
 		}
 		return false;
 	}
 
-	isFirstCell(row, cell){
-		const firstCell = row.getElementsByClassName("cell")[0];
-		if (firstCell === cell) {
+	isFirstCell( row, cell ) {
+		const firstCell = row.getElementsByClassName( "cell" )[ 0 ];
+		if ( firstCell === cell ) {
 			return true;
 		}
 		return false;
 	}
 
-	focusFirstInput(row){
-		const firstCell = row.getElementsByClassName('cell')[0];
+	focusFirstInput( row ) {
+		const firstCell = row.getElementsByClassName( 'cell' )[ 0 ];
 		const input = firstCell.querySelector(
 			".letter:first-child",
 		);
 		input.focus();
 	}
 
-	focusNextInput(cell) {
+	focusNextInput( cell ) {
 		const row = cell.parentElement;
-		const cells = [...row.getElementsByClassName("cell")];
-		const nextCellInput = cells[cells.indexOf(cell) + 1].querySelector(
+		const cells = [ ...row.getElementsByClassName( "cell" ) ];
+		const nextCellInput = cells[ cells.indexOf( cell ) + 1 ].querySelector(
 			".letter:first-child",
 		);
 		nextCellInput.focus();
 	}
 
-	focusPrevInput(cell){
+	focusPrevInput( cell ) {
 		const row = cell.parentElement;
-		const cells = [...row.getElementsByClassName("cell")];
-		const prevCellInput = cells[cells.indexOf(cell) - 1].querySelector(
+		const cells = [ ...row.getElementsByClassName( "cell" ) ];
+		const prevCellInput = cells[ cells.indexOf( cell ) - 1 ].querySelector(
 			".letter:first-child",
 		);
 		prevCellInput.focus();
 	}
 
-	focusNextRow(row){
-		console.log(row);
-		if(this.rows[this.rows.indexOf(row)] === this.rows[this.rows.length - 1]){
+	focusNextRow( row ) {
+		console.log( row );
+		if ( this.rows[ this.rows.indexOf( row ) ] === this.rows[ this.rows.length - 1 ] ) {
 			return;
-		}
-		else{
-			const nextRow = this.rows[this.rows.indexOf(row)+1];
-			console.log(nextRow);
-			this.focusFirstInput(nextRow);
-		}
-	}
-
-	enableCells(){
-		for(var i = 0; i<this.rows.length; i++){
-			const row = this.rows[i];
-			this.enableCellsOnCurrentRow(row);
+		} else {
+			const nextRow = this.rows[ this.rows.indexOf( row ) + 1 ];
+			console.log( nextRow );
+			this.focusFirstInput( nextRow );
 		}
 	}
 
-	enableCellsOnCurrentRow(row){
-		const cells = row.getElementsByClassName('cell');
-		for(var i = 0; i<cells.length; i++){
-			const cell = cells[i];
-			this.enableCurrentCell(cell);
+	enableCells() {
+		for ( var i = 0; i < this.rows.length; i++ ) {
+			const row = this.rows[ i ];
+			this.enableCellsOnCurrentRow( row );
 		}
 	}
 
-	enableCurrentCell(cell){
-		console.log(cell);
+	enableCellsOnCurrentRow( row ) {
+		const cells = row.getElementsByClassName( 'cell' );
+		for ( var i = 0; i < cells.length; i++ ) {
+			const cell = cells[ i ];
+			this.enableCurrentCell( cell );
+		}
+	}
+
+	enableCurrentCell( cell ) {
+		console.log( cell );
 		const input = cell.firstChild;
-		this.enableInput(input);
+		this.enableInput( input );
 	}
 
-	enableInput(input){
+	enableInput( input ) {
 		const that = this;
-		if(!isMobile()){
-			input.addEventListener("keydown", function(ev){
+		if ( !isMobile() ) {
+			input.addEventListener( "keydown", function ( ev ) {
 				const currentValue = this.value;
 				const cell = this.parentElement;
 				const row = cell.parentElement;
 				var key = ev.keyCode;
-	
-				if (key === 13) {
+
+				if ( key === 13 ) {
 					ev.preventDefault();
-					that.focusNextRow(this.parentElement.parentElement);
-				}
-				else{
+					that.focusNextRow( this.parentElement.parentElement );
+				} else {
 					this.value = "";
 				}
-			
-				if (key === 8) {
+
+				if ( key === 8 ) {
 					ev.preventDefault();
-					if(that.isFirstCell(row, cell))
-					{
+					if ( that.isFirstCell( row, cell ) ) {
 						this.value = '';
-					}else{
-						if(currentValue === ''){
-							that.focusPrevInput(cell);
-						}
-						else{
+					} else {
+						if ( currentValue === '' ) {
+							that.focusPrevInput( cell );
+						} else {
 							this.value = '';
 						}
-					}	
+					}
 				}
-			});
-			input.addEventListener("keyup", function(ev){
-	
+			} );
+			input.addEventListener( "keyup", function ( ev ) {
+
 				const cell = this.parentElement;
 				const row = cell.parentElement;
 				var key = ev.keyCode;
-				if ((key >= 65 && key <= 90) || key == 32) {
-					if(that.isLastCell(row, cell)){
-						
-					}
-					else{
-						if(this.value !== ''){
-							that.focusNextInput(cell);
+				if ( ( key >= 65 && key <= 90 ) || key == 32 ) {
+					if ( that.isLastCell( row, cell ) ) {
+
+					} else {
+						if ( this.value !== '' ) {
+							that.focusNextInput( cell );
 						}
-						
+
 					}
-				} else if (key === 13) {
+				} else if ( key === 13 ) {
 					ev.preventDefault();
 					this.value = this.value;
-				} else if (ev.keyCode === 8) {
+				} else if ( ev.keyCode === 8 ) {
 					ev.preventDefault();
 				} else {
 					ev.preventDefault();
 				}
-			});
+			} );
 
-			input.addEventListener('change', function(ev){
-				console.log(ev);
-			});
+			input.addEventListener( 'change', function ( ev ) {
+				console.log( ev );
+			} );
+		} else {
+			input.addEventListener( 'click', function ( ev ) {
+				console.log( ev );
+				// const cell = this.parentElement;
+				// const row = cell.parentElement;
+				// if ( ev.inputType === 'insertText' ) {
+				// 	this.value = [ ...this.value ][ this.value.length - 1 ];
+				// 	if ( !that.isLastCell( row, cell ) ) {
+				// 		that.focusNextInput( cell );
+				// 	}
+				// }
+
+				// if ( ev.inputType === 'deleteContentBackward' ) {
+				// 	if ( !that.isFirstCell( row, cell ) ) {
+				// 		that.focusPrevInput( cell );
+				// 	}
+				// }
+
+			} );
 		}
-		else{
-			input.addEventListener('input', function(ev){
-				console.log(ev);
-				const cell = this.parentElement;
-				const row = cell.parentElement;
-				if(ev.inputType === 'insertText'){
-					this.value = [...this.value][this.value.length - 1];
-					if(!that.isLastCell(row, cell))
-					{
-						that.focusNextInput(cell);
-					}
-				}
-				
-				if(ev.inputType === 'deleteContentBackward'){
-					if(!that.isFirstCell(row, cell)){
-						that.focusPrevInput(cell);
-					}
-				}
-				
-			});
 
-			input.addEventListener('*', function(ev){
-				console.log(ev);
-			});
-		}
-		
 
-		
+
 	}
 
-	setVerify(){
-		for(var elem of this.controls){
-			if(elem.getAttribute('id') === 'verify'){
+	setVerify() {
+		for ( var elem of this.controls ) {
+			if ( elem.getAttribute( 'id' ) === 'verify' ) {
 				this.verify = elem;
 			}
 		}
 	}
 
-	enableVerify(){
+	enableVerify() {
 		const that = this;
-		this.verify.addEventListener('click', function(){
+		this.verify.addEventListener( 'click', function () {
 			that.verifyAll();
-		});
+		} );
 	}
 
-	verifyAll(){
+	verifyAll() {
 		this.enableRetry();
-		this.verify.classList.add('invisible');
-		for(var row of this.rows){
-			this.verifyRow(row, this.data.words[this.rows.indexOf(row)].word);
+		this.verify.classList.add( 'invisible' );
+		for ( var row of this.rows ) {
+			this.verifyRow( row, this.data.words[ this.rows.indexOf( row ) ].word );
 		}
 	}
 
-	verifyRow(row, word){
-		const cells = [...row.getElementsByClassName('cell')];
+	verifyRow( row, word ) {
+		const cells = [ ...row.getElementsByClassName( 'cell' ) ];
 		var correct = true;
-		console.log(word);
-		const letters = [...word];
-		for(var cell of cells){
-			if(!this.verifyCell(cell, letters[cells.indexOf(cell)])){
+		console.log( word );
+		const letters = [ ...word ];
+		for ( var cell of cells ) {
+			if ( !this.verifyCell( cell, letters[ cells.indexOf( cell ) ] ) ) {
 				correct = false;
 				break;
 			}
 		}
 
-		if(correct){
-			row.classList.add('verified', 'correct');
-		}
-		else{
-			row.classList.add('verified', 'incorrect');
+		if ( correct ) {
+			row.classList.add( 'verified', 'correct' );
+		} else {
+			row.classList.add( 'verified', 'incorrect' );
 		}
 	}
 
-	verifyCell(cell, letter){
-		const input = cell.querySelector('.letter:first-child');
-		input.setAttribute('readonly', '');
-		input.classList.add('petrified');
-		if(input.value === letter){
+	verifyCell( cell, letter ) {
+		const input = cell.querySelector( '.letter:first-child' );
+		input.setAttribute( 'readonly', '' );
+		input.classList.add( 'petrified' );
+		if ( input.value === letter ) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
 
-	setRetry(){
-		for(var elem of this.controls){
-			if(elem.getAttribute('id') === 'retry'){
+	setRetry() {
+		for ( var elem of this.controls ) {
+			if ( elem.getAttribute( 'id' ) === 'retry' ) {
 				this.retry = elem;
 			}
 		}
 	}
 
-	enableRetry(){
+	enableRetry() {
 		const that = this;
-		this.retry.classList.remove('invisible');
-		this.retry.addEventListener('click', function handler(){
-			console.log('reset');
-			that.reset(that);
-			this.removeEventListener('click', handler);
-			this.classList.add('invisible');
-		});
+		this.retry.classList.remove( 'invisible' );
+		this.retry.addEventListener( 'click', function handler() {
+			console.log( 'reset' );
+			that.reset( that );
+			this.removeEventListener( 'click', handler );
+			this.classList.add( 'invisible' );
+		} );
 	}
 
-	reset(){
-		console.log('reset');
-		if(this.atempts < this.data.numOfAtemps){
-			console.log('reste');
+	reset() {
+		console.log( 'reset' );
+		if ( this.atempts < this.data.numOfAtemps ) {
+			console.log( 'reste' );
 			this.atempts++;
-			for(var row of this.rows){
-				row.classList.remove('correct', 'incorrect', 'verified');
-				const cells = row.getElementsByClassName('cell');
-				for( var cell of cells ){
-					const input = cell.querySelector('.letter:first-child');
-					input.classList.remove('petrified');
+			for ( var row of this.rows ) {
+				row.classList.remove( 'correct', 'incorrect', 'verified' );
+				const cells = row.getElementsByClassName( 'cell' );
+				for ( var cell of cells ) {
+					const input = cell.querySelector( '.letter:first-child' );
+					input.classList.remove( 'petrified' );
 					input.value = '';
-					input.removeAttribute('readonly', '');
+					input.removeAttribute( 'readonly', '' );
 				}
 			}
-			if(this.atempts === this.data.numOfAtemps){
+			if ( this.atempts === this.data.numOfAtemps ) {
 				this.retry.style.visibility = 'hidden';
 			}
-			this.verify.classList.remove('invisible');
+			this.verify.classList.remove( 'invisible' );
 		}
-		this.focusFirstInput(this.rows[0]);
+		this.focusFirstInput( this.rows[ 0 ] );
 
 	}
 }
 
-const crosswords = new CorssWords(data, root, controls);
+const crosswords = new CorssWords( data, root, controls );
 crosswords.generate();
-
-
 },{"./data":1,"./mobile":2}]},{},[1,2,3]);
