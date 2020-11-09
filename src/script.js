@@ -219,7 +219,8 @@ class CorssWords {
 			input.addEventListener( 'keypress', function ( ev ) {
 				console.log( ev );
 				const eventConsole = document.getElementById( 'console' );
-				eventConsole.innerText = ev;
+				eventConsole.innerText = JSON.stringify( ev );
+				eventConsole.style.color = 'black';
 				// const cell = this.parentElement;
 				// const row = cell.parentElement;
 				// if ( ev.inputType === 'insertText' ) {
