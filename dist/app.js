@@ -225,30 +225,27 @@ class CorssWords {
 				}
 			} );
 
-			input.addEventListener( 'change', function ( ev ) {
-				console.log( ev );
-			} );
+			// input.addEventListener( 'change', function ( ev ) {
+			// 	console.log( ev );
+			// } );
 		} else {
-			input.addEventListener( 'keypress', function ( ev ) {
+			input.addEventListener( 'input', function ( ev ) {
 				console.log( ev );
-				const eventConsole = document.getElementById( 'console' );
-				eventConsole.innerText = JSON.stringify( ev );
-				eventConsole.style.color = 'black';
-				// const cell = this.parentElement;
-				// const row = cell.parentElement;
-				// if ( ev.inputType === 'insertText' ) {
-				// 	this.value = [ ...this.value ][ this.value.length - 1 ];
-				// 	if ( !that.isLastCell( row, cell ) ) {
-				// 		that.focusNextInput( cell );
-				// 	}
-				// }
+				const cell = this.parentElement;
+				const row = cell.parentElement;
 
-				// if ( ev.inputType === 'deleteContentBackward' ) {
-				// 	if ( !that.isFirstCell( row, cell ) ) {
-				// 		that.focusPrevInput( cell );
-				// 	}
-				// }
+				if ( ev.inpuType === 'insertText' ) {
+					if ( !that.isLastCell( row, cell ) ) {
+						that.focusNextInput( cell );
+					}
 
+				} else if ( ev.inpuType === 'deleteContentBackword' && this.value !== ' ' ) {
+					this.value = ' ';
+				} else if ( ev.inpuType === 'deleteContentBackword' && this.value === ' ' ) {
+					if ( !that.isFirstCell( row, cell ) ) {
+						that.focusPrevInput( cell );
+					}
+				}
 			} );
 		}
 
