@@ -120,9 +120,9 @@ class CorssWords {
 			".letter:first-child",
 		);
 		nextCellInput.focus();
-		if ( isMobile() ) {
-			nextCellInput.value = ' ';
-		}
+		// if ( isMobile() ) {
+		// 	nextCellInput.value = ' ';
+		// }
 	}
 
 	focusPrevInput( cell ) {
@@ -224,6 +224,12 @@ class CorssWords {
 			} );
 
 		} else {
+			input.addEventListener( 'focus', function () {
+				if ( this.value === '' ) {
+					this.value = ' ';
+					this.setAttribute( 'salt', true );
+				}
+			} );
 			input.addEventListener( 'input', function ( ev ) {
 				console.log( ev );
 				const cell = this.parentElement;
