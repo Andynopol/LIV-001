@@ -229,16 +229,19 @@ class CorssWords {
 				const cell = input.parentElement;
 				const row = cell.parentElement;
 				var output = [];
-				for ( i = 0; i < value2.length; i++ ) {
+				for ( var i = 0; i < value2.length; i++ ) {
 					if ( value1[ i ] !== value2[ i ] ) {
 						output.push( value2[ i ] );
 					}
 				}
-				if ( output.join( '' ) === '' && value1.length > value2.length ) {
+				console.log( output );
+				if ( output.length === 0 && newValue === '' ) {
 					backspace = true;
+				} else {
+					backspace = false;
 				}
 				if ( backspace ) {
-					if ( input.getAttribute( 'salt' ) === 'true' && !that.isFirstCell( row, cell ) ) {
+					if ( value1 === '' && !that.isFirstCell( row, cell ) ) {
 						that.focusPrevInput( cell );
 					} else {
 						input.value = '';
@@ -255,62 +258,20 @@ class CorssWords {
 				}
 			};
 
-			input.addEventListener( 'keydown', function ( ev ) {
+			input.addEventListener( 'keydown', function () {
 				oldValue = this.value;
+				console.log( "oldvalue:" + oldValue );
 			} );
 
-			input.addEventListener( 'keyup', function ( ev ) {
+			input.addEventListener( 'keyup', function () {
 				newValue = this.value;
+				console.log( "newValue:" + newValue );
 				difference( this, oldValue, newValue );
 			} );
-			// const keyDownHandler = function ( e ) {
-			// 	oldValue = input.value;
-			// 	document.getElementById( "onkeydown-result" ).innerHTML = input.value;
-			// };
-			// const inputHandler = function ( e ) {
-			// 	newValue = input.value;
-			// 	document.getElementById( "oninput-result" ).innerHTML = input.value;
-			// 	document.getElementById( "typedvalue-result" ).innerHTML = difference( oldValue, newValue );
-			// };
-			// input.addEventListener( 'focus', function () {
-			// 	if ( this.value === '' ) {
-			// 		this.value = ' ';
-			// 		this.setAttribute( 'salt', true );
-			// 	}
-			// } );
-			// input.addEventListener( 'input', function ( ev ) {
-			// 	console.log( ev );
-			// 	const cell = this.parentElement;
-			// 	const row = cell.parentElement;
 
-			// 	if ( ev.inputType === "insertText" ) {
-			// 		this.value = ev.data;
-			// 		this.setAttribute( 'salt', false );
-			// 		if ( !that.isLastCell( row, cell ) ) {
-			// 			that.focusNextInput( cell );
-			// 		}
-
-			// 	} else if ( ev.inputType === "deleteContentBackward" ) {
-			// 		ev.preventDefault();
-			// 		if ( this.getAttribute( 'salt' ) === 'true' ) {
-			// 			if ( !that.isFirstCell( row, cell ) ) {
-			// 				that.focusPrevInput( cell );
-			// 			}
-			// 		} else {
-			// 			this.setAttribute( 'salt', true );
-			// 			this.value = ' ';
-			// 		}
-			// 	}
-			// } );
-
-
-			// input.addEventListener( 'keyup', function ( ev ) {
-			// 	document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev.keyCode );
-			// } );
-
-			// input.addEventListener( 'keydown', function ( ev ) {
-			// 	document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev.keyCode );
-			// } );
+			input.addEventListener( 'focus', function () {
+				oldValue = this.value;
+			} );
 		}
 
 
