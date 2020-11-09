@@ -237,7 +237,7 @@ class CorssWords {
 						input.value = '';
 					}
 				} else {
-					input.value = output.join( '' );
+					input.value = output[ output.length - 1 ];
 					if ( input.value.match( /^[A-Za-z]+$/ ) ) {
 						if ( !that.isLastCell( row, cell ) ) {
 							that.focusNextInput( cell );
