@@ -256,6 +256,7 @@ class CorssWords {
 				}
 				if ( output.length > 1 ) {
 					output = [ ...output[ output.length - 1 ] ];
+					newValue = output[ 0 ];
 				}
 				document.getElementById( 'console' ).innerText = output;
 				if ( output.length === 0 && newValue === '' ) {
