@@ -13,6 +13,7 @@ module.exports = mobile;
 },{}],3:[function(require,module,exports){
 const data = require( './data' );
 const isMobile = require( './mobile' );
+console.log( isMobile() );
 const root = document.getElementById( 'root' );
 const controls = [ ...document.getElementById( 'controls' ).getElementsByTagName( 'button' ) ];
 
@@ -84,6 +85,9 @@ class CorssWords {
 			cell.setAttribute( 'letter', letter );
 			cell.appendChild( input );
 			row.appendChild( cell );
+			if ( isMobile() ) {
+				input.setAttribute( 'salt', true );
+			}
 		}
 
 	}
@@ -129,7 +133,7 @@ class CorssWords {
 			".letter:first-child",
 		);
 		nextCellInput.focus();
-		if ( isMobile ) {
+		if ( isMobile() ) {
 			nextCellInput.value = ' ';
 		}
 	}
@@ -239,21 +243,36 @@ class CorssWords {
 
 				if ( ev.inputType === "insertText" ) {
 					this.value = ev.data;
+					this.setAttribute( 'salt', false );
 					if ( !that.isLastCell( row, cell ) ) {
 						that.focusNextInput( cell );
 					}
 
-				} else if ( ev.inputType === "deleteContentBackword" && this.value !== ' ' ) {
+				} else if ( ev.inputType === "deleteContentBackward" ) {
 					ev.preventDefault();
-					this.value = ' ';
-				} else if ( ev.inputType === "deleteContentBackword" && this.value === ' ' ) {
-					ev.preventDefault();
-					this.value = '';
-					console.log( !that.isFirstCell( row, cell ) );
-					if ( !that.isFirstCell( row, cell ) ) {
-						that.focusPrevInput( cell );
+					if ( this.getAttribute( 'salt' ) === 'true' ) {
+						if ( !that.isFirstCell( row, cell ) ) {
+							that.focusPrevInput( cell );
+						}
+					} else {
+						this.setAttribute( 'salt', true );
+						this.value = ' ';
 					}
 				}
+
+				// } else if ( ev.inputType === "deleteContentBackward" && this.value === ' ' ) {
+				// 	ev.preventDefault();
+				// 	console.log( 'focusam inputul precendent' );
+				// 	this.value = '';
+				// 	console.log( !that.isFirstCell( row, cell ) );
+				// 	if ( !that.isFirstCell( row, cell ) ) {
+				// 		that.focusPrevInput( cell );
+				// 	}
+				// }
+			} );
+
+			input.addEventListener( 'keypress', function ( ev ) {
+				console.log( ev );
 			} );
 		}
 
