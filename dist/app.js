@@ -254,7 +254,10 @@ class CorssWords {
 						output.push( value2[ i ] );
 					}
 				}
-				output = output[ output.length - 1 ];
+				if ( output.length !== 0 ) {
+					output = output[ output.length - 1 ];
+				}
+				document.getElementById( 'console' ).innerText = output;
 				if ( output.length === 0 && newValue === '' ) {
 					backspace = true;
 				} else {
