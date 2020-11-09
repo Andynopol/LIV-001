@@ -1,6 +1,7 @@
 const data = require( './data' );
-const isMobile = require( './mobile' );
-console.log( isMobile() );
+const MobileDetector = require( './mobile' );
+console.log( MobileDetector.isMobile );
+console.log( MobileDetector.isAndroid );
 const root = document.getElementById( 'root' );
 const controls = [ ...document.getElementById( 'controls' ).getElementsByTagName( 'button' ) ];
 
@@ -72,7 +73,7 @@ class CorssWords {
 			cell.setAttribute( 'letter', letter );
 			cell.appendChild( input );
 			row.appendChild( cell );
-			if ( isMobile() ) {
+			if ( MobileDetector.isAndroid ) {
 				input.setAttribute( 'salt', true );
 			}
 		}
@@ -120,9 +121,6 @@ class CorssWords {
 			".letter:first-child",
 		);
 		nextCellInput.focus();
-		// if ( isMobile() ) {
-		// 	nextCellInput.value = ' ';
-		// }
 	}
 
 	focusPrevInput( cell ) {
@@ -132,7 +130,7 @@ class CorssWords {
 			".letter:first-child",
 		);
 		prevCellInput.focus();
-		if ( isMobile() && prevCellInput.value === '' ) {
+		if ( MobileDetector.isAndroid && prevCellInput.value === '' ) {
 			prevCellInput.setAttribute( 'salt', 'true' );
 			prevCellInput.value = ' ';
 		}
@@ -172,7 +170,7 @@ class CorssWords {
 
 	enableInput( input ) {
 		const that = this;
-		if ( !isMobile() ) {
+		if ( !MobileDetector.isAndroid ) {
 			input.addEventListener( "keydown", function ( ev ) {
 				const currentValue = this.value;
 				const cell = this.parentElement;
@@ -224,46 +222,95 @@ class CorssWords {
 			} );
 
 		} else {
-			input.addEventListener( 'focus', function () {
-				if ( this.value === '' ) {
-					this.value = ' ';
-					this.setAttribute( 'salt', true );
-				}
-			} );
-			input.addEventListener( 'input', function ( ev ) {
-				console.log( ev );
-				const cell = this.parentElement;
+			var oldValue;
+			var newValue;
+			var backspace = false;
+			const difference = function ( input, value1, value2 ) {
+				const cell = input.parentElement;
 				const row = cell.parentElement;
-
-				if ( ev.inputType === "insertText" ) {
-					this.value = ev.data;
-					this.setAttribute( 'salt', false );
-					if ( !that.isLastCell( row, cell ) ) {
-						that.focusNextInput( cell );
-					}
-
-				} else if ( ev.inputType === "deleteContentBackward" ) {
-					ev.preventDefault();
-					if ( this.getAttribute( 'salt' ) === 'true' ) {
-						if ( !that.isFirstCell( row, cell ) ) {
-							that.focusPrevInput( cell );
-						}
-					} else {
-						this.setAttribute( 'salt', true );
-						this.value = ' ';
+				var output = [];
+				for ( i = 0; i < value2.length; i++ ) {
+					if ( value1[ i ] !== value2[ i ] ) {
+						output.push( value2[ i ] );
 					}
 				}
-			} );
+				if ( output.join( '' ) === '' && value1.length > value2.length ) {
+					backspace = true;
+				}
+				if ( backspace ) {
+					if ( input.getAttribute( 'salt' ) === 'true' && !that.isFirstCell( row, cell ) ) {
+						that.focusPrevInput( cell );
+					} else {
+						input.value = '';
+						input.setAttribute( 'salt', true );
+					}
+				} else {
+					input.value = output.join( '' );
+					if ( input.value.match( /^[A-Za-z]+$/ ) ) {
+						if ( !that.isLastCell( row, cell ) ) {
+							that.focusNextInput( cell );
+						}
+					}
 
-			// console.log( docyment. );
-
-			input.addEventListener( 'keyup', function ( ev ) {
-				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev.keyCode );
-			} );
+				}
+			};
 
 			input.addEventListener( 'keydown', function ( ev ) {
-				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev.keyCode );
+				oldValue = this.value;
 			} );
+
+			input.addEventListener( 'keyup', function ( ev ) {
+				newValue = this.value;
+				difference( this, oldValue, newValue );
+			} );
+			// const keyDownHandler = function ( e ) {
+			// 	oldValue = input.value;
+			// 	document.getElementById( "onkeydown-result" ).innerHTML = input.value;
+			// };
+			// const inputHandler = function ( e ) {
+			// 	newValue = input.value;
+			// 	document.getElementById( "oninput-result" ).innerHTML = input.value;
+			// 	document.getElementById( "typedvalue-result" ).innerHTML = difference( oldValue, newValue );
+			// };
+			// input.addEventListener( 'focus', function () {
+			// 	if ( this.value === '' ) {
+			// 		this.value = ' ';
+			// 		this.setAttribute( 'salt', true );
+			// 	}
+			// } );
+			// input.addEventListener( 'input', function ( ev ) {
+			// 	console.log( ev );
+			// 	const cell = this.parentElement;
+			// 	const row = cell.parentElement;
+
+			// 	if ( ev.inputType === "insertText" ) {
+			// 		this.value = ev.data;
+			// 		this.setAttribute( 'salt', false );
+			// 		if ( !that.isLastCell( row, cell ) ) {
+			// 			that.focusNextInput( cell );
+			// 		}
+
+			// 	} else if ( ev.inputType === "deleteContentBackward" ) {
+			// 		ev.preventDefault();
+			// 		if ( this.getAttribute( 'salt' ) === 'true' ) {
+			// 			if ( !that.isFirstCell( row, cell ) ) {
+			// 				that.focusPrevInput( cell );
+			// 			}
+			// 		} else {
+			// 			this.setAttribute( 'salt', true );
+			// 			this.value = ' ';
+			// 		}
+			// 	}
+			// } );
+
+
+			// input.addEventListener( 'keyup', function ( ev ) {
+			// 	document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev.keyCode );
+			// } );
+
+			// input.addEventListener( 'keydown', function ( ev ) {
+			// 	document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev.keyCode );
+			// } );
 		}
 
 
