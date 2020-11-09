@@ -254,6 +254,14 @@ class CorssWords {
 					}
 				}
 			} );
+
+			input.addEventListener( 'keydown', function () {
+				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + 'keydown';
+			} );
+
+			input.addEventListener( 'keyup', function () {
+				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + 'keyup';
+			} );
 		}
 
 
