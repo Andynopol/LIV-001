@@ -216,7 +216,7 @@ class CorssWords {
 				console.log( ev );
 			} );
 		} else {
-			input.addEventListener( 'click', function ( ev ) {
+			input.addEventListener( 'keypress', function ( ev ) {
 				console.log( ev );
 				// const cell = this.parentElement;
 				// const row = cell.parentElement;
