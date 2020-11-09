@@ -170,7 +170,7 @@ class CorssWords {
 
 	enableInput( input ) {
 		const that = this;
-		if ( !MobileDetector.isAndroid ) {
+		if ( !MobileDetector.isMobile ) {
 			input.addEventListener( "keydown", function ( ev ) {
 				const currentValue = this.value;
 				const cell = this.parentElement;
