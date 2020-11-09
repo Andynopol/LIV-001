@@ -116,6 +116,9 @@ class CorssWords {
 			".letter:first-child",
 		);
 		nextCellInput.focus();
+		if ( isMobile ) {
+			nextCellInput.value = ' ';
+		}
 	}
 
 	focusPrevInput( cell ) {
@@ -221,15 +224,19 @@ class CorssWords {
 				const cell = this.parentElement;
 				const row = cell.parentElement;
 
-				if ( ev.inpuType === "insertText" ) {
-					console.log( ev.inputType );
+				if ( ev.inputType === "insertText" ) {
+					this.value = ev.data;
 					if ( !that.isLastCell( row, cell ) ) {
 						that.focusNextInput( cell );
 					}
 
 				} else if ( ev.inputType === "deleteContentBackword" && this.value !== ' ' ) {
+					ev.preventDefault();
 					this.value = ' ';
 				} else if ( ev.inputType === "deleteContentBackword" && this.value === ' ' ) {
+					ev.preventDefault();
+					this.value = '';
+					console.log( !that.isFirstCell( row, cell ) );
 					if ( !that.isFirstCell( row, cell ) ) {
 						that.focusPrevInput( cell );
 					}
