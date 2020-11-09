@@ -257,6 +257,7 @@ class CorssWords {
 				if ( output.length > 1 ) {
 					output = [ ...output[ output.length - 1 ] ];
 				}
+				document.getElementById( 'console' ).innerText = output;
 				if ( output.length === 0 && newValue === '' ) {
 					backspace = true;
 				} else {
