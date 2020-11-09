@@ -251,7 +251,6 @@ class CorssWords {
 			var oldValue;
 			var newValue;
 			var backspace = false;
-			document.getElementById( 'console' ).innerText = MobileDetector.isAndroid;
 			const difference = function ( input, value1, value2 ) {
 				const cell = input.parentElement;
 				const row = cell.parentElement;
