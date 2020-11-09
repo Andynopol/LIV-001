@@ -257,12 +257,12 @@ class CorssWords {
 
 			// console.log( docyment. );
 
-			input.addEventListener( 'keyup', function () {
-				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + 'keyup';
+			input.addEventListener( 'keyup', function ( ev ) {
+				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev );
 			} );
 
-			input.addEventListener( 'keydown', function () {
-				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + 'keydown';
+			input.addEventListener( 'keydown', function ( ev ) {
+				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev );
 			} );
 		}
 
