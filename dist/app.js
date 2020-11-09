@@ -235,14 +235,14 @@ class CorssWords {
 				const row = cell.parentElement;
 
 				if ( ev.inpuType === 'insertText' ) {
-					console.log( ev.inpuType );
+					console.log( ev.inputType );
 					if ( !that.isLastCell( row, cell ) ) {
 						that.focusNextInput( cell );
 					}
 
-				} else if ( ev.inpuType === 'deleteContentBackword' && this.value !== ' ' ) {
+				} else if ( ev.inputType === 'deleteContentBackword' && this.value !== ' ' ) {
 					this.value = ' ';
-				} else if ( ev.inpuType === 'deleteContentBackword' && this.value === ' ' ) {
+				} else if ( ev.inputType === 'deleteContentBackword' && this.value === ' ' ) {
 					if ( !that.isFirstCell( row, cell ) ) {
 						that.focusPrevInput( cell );
 					}
