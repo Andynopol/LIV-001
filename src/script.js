@@ -234,7 +234,6 @@ class CorssWords {
 						output.push( value2[ i ] );
 					}
 				}
-				console.log( output );
 				if ( output.length === 0 && newValue === '' ) {
 					backspace = true;
 				} else {
@@ -260,12 +259,10 @@ class CorssWords {
 
 			input.addEventListener( 'keydown', function () {
 				oldValue = this.value;
-				console.log( "oldvalue:" + oldValue );
 			} );
 
 			input.addEventListener( 'keyup', function () {
 				newValue = this.value;
-				console.log( "newValue:" + newValue );
 				difference( this, oldValue, newValue );
 			} );
 
