@@ -253,7 +253,7 @@ class CorssWords {
 			} );
 
 			input.addEventListener( 'keyup', function () {
-				newValue = this.value;
+				newValue = this.value[ input.value.length - 1 ];
 				difference( this, oldValue, newValue );
 			} );
 
