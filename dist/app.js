@@ -254,7 +254,7 @@ class CorssWords {
 						output.push( value2[ i ] );
 					}
 				}
-				document.getElementById( 'console' ).innerText = document.getElementById( 'console' ).innerText + output.length;
+				document.getElementById( 'console' ).innerText = output;
 				if ( output.length === 0 && newValue === '' ) {
 					backspace = true;
 				} else {
@@ -283,11 +283,11 @@ class CorssWords {
 			} );
 
 			input.addEventListener( 'keyup', function () {
-				if ( this.value.length !== 0 ) {
-					newValue = this.value[ input.value.length - 1 ];
-				} else {
-					newValue = this.value;
-				}
+				// if ( this.value.length !== 0 ) {
+				// 	newValue = this.value[ input.value.length - 1 ];
+				// } else {
+				newValue = this.value;
+				// }
 
 				difference( this, oldValue, newValue );
 			} );
