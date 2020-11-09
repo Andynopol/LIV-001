@@ -225,7 +225,7 @@ class CorssWords {
 						output.push( value2[ i ] );
 					}
 				}
-				document.getElementById( 'console' ).innerText = output;
+				output = output[ output.length - 1 ];
 				if ( output.length === 0 && newValue === '' ) {
 					backspace = true;
 				} else {
@@ -239,7 +239,6 @@ class CorssWords {
 					}
 				} else {
 					input.value = output[ output.length - 1 ];
-					// document.getElementById( 'console' ).innerText = 'oldValue: ' + oldValue + '<br/>' + 'newValue: ' + newValue;
 					if ( input.value.match( /^[A-Za-z]+$/ ) ) {
 						if ( !that.isLastCell( row, cell ) ) {
 							that.focusNextInput( cell );
