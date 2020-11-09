@@ -222,6 +222,7 @@ class CorssWords {
 				const row = cell.parentElement;
 
 				if ( ev.inpuType === 'insertText' ) {
+					console.log( ev.inpuType );
 					if ( !that.isLastCell( row, cell ) ) {
 						that.focusNextInput( cell );
 					}
