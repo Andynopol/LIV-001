@@ -282,7 +282,12 @@ class CorssWords {
 			} );
 
 			input.addEventListener( 'keyup', function () {
-				newValue = this.value[ input.value.length - 1 ];
+				if ( this.value.length != 0 ) {
+					newValue = this.value[ input.value.length - 1 ];
+				} else {
+					newValue = this.value;
+				}
+
 				difference( this, oldValue, newValue );
 			} );
 
