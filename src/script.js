@@ -132,6 +132,10 @@ class CorssWords {
 			".letter:first-child",
 		);
 		prevCellInput.focus();
+		if ( isMobile() && prevCellInput.value === '' ) {
+			prevCellInput.setAttribute( 'salt', 'true' );
+			prevCellInput.value = ' ';
+		}
 	}
 
 	focusNextRow( row ) {

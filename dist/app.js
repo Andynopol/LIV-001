@@ -145,6 +145,10 @@ class CorssWords {
 			".letter:first-child",
 		);
 		prevCellInput.focus();
+		if ( isMobile() && prevCellInput.value === '' ) {
+			prevCellInput.setAttribute( 'salt', 'true' );
+			prevCellInput.value = ' ';
+		}
 	}
 
 	focusNextRow( row ) {
@@ -232,9 +236,6 @@ class CorssWords {
 				}
 			} );
 
-			// input.addEventListener( 'change', function ( ev ) {
-			// 	console.log( ev );
-			// } );
 		} else {
 			input.addEventListener( 'input', function ( ev ) {
 				console.log( ev );
@@ -259,20 +260,6 @@ class CorssWords {
 						this.value = ' ';
 					}
 				}
-
-				// } else if ( ev.inputType === "deleteContentBackward" && this.value === ' ' ) {
-				// 	ev.preventDefault();
-				// 	console.log( 'focusam inputul precendent' );
-				// 	this.value = '';
-				// 	console.log( !that.isFirstCell( row, cell ) );
-				// 	if ( !that.isFirstCell( row, cell ) ) {
-				// 		that.focusPrevInput( cell );
-				// 	}
-				// }
-			} );
-
-			input.addEventListener( 'keypress', function ( ev ) {
-				console.log( ev );
 			} );
 		}
 
