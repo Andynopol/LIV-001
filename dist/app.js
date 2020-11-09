@@ -271,11 +271,11 @@ class CorssWords {
 			// console.log( docyment. );
 
 			input.addEventListener( 'keyup', function ( ev ) {
-				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev );
+				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev.keyCode );
 			} );
 
 			input.addEventListener( 'keydown', function ( ev ) {
-				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev );
+				document.getElementById( 'console' ).innerHTML = document.getElementById( 'console' ).innerHTML + JSON.stringify( ev.keyCode );
 			} );
 		}
 
