@@ -249,17 +249,12 @@ class CorssWords {
 				const cell = input.parentElement;
 				const row = cell.parentElement;
 				var output = [];
-				newValue = newValue[ newValue.length - 1 ];
 				for ( var i = 0; i < value2.length; i++ ) {
 					if ( value1[ i ] !== value2[ i ] ) {
 						output.push( value2[ i ] );
 					}
 				}
-				if ( output.length > 1 ) {
-					output = [ ...output[ output.length - 1 ] ];
-					newValue = output[ 0 ];
-				}
-				document.getElementById( 'console' ).innerText = newValue;
+				document.getElementById( 'console' ).innerText = value2;
 				if ( output.length === 0 && newValue === '' ) {
 					backspace = true;
 				} else {
@@ -292,7 +287,7 @@ class CorssWords {
 				// } else {
 				newValue = this.value;
 				// }
-
+				newValue = newValue[ newValue.length ];
 				difference( this, oldValue, newValue );
 			} );
 
