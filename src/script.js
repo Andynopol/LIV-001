@@ -257,24 +257,16 @@ class CorssWords {
 			} );
 
 			input.addEventListener( 'keyup', function () {
-				// if ( this.value.length !== 0 ) {
-				// 	newValue = this.value[ input.value.length - 1 ];
-				// } else {
-
 				newValue = this.value;
 				if ( newValue.length >= 2 ) {
 					newValue = newValue[ newValue.length - 1 ];
 				}
-
-				// }
 				difference( this, oldValue, newValue );
 			} );
 
 			input.addEventListener( 'focus', function () {
 				oldValue = this.value;
-				// const value = this.value;
-				// this.value = null;
-				// this.value = value;
+
 			} );
 		}
 
