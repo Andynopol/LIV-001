@@ -289,7 +289,12 @@ class CorssWords {
 				// if ( this.value.length !== 0 ) {
 				// 	newValue = this.value[ input.value.length - 1 ];
 				// } else {
-				newValue = this.value[ this.value.length - 1 ];
+				if ( this.value.length !== 0 ) {
+					newValue = this.value[ this.value.length - 1 ];
+				} else {
+					newValue = this.value;
+				}
+
 				// }
 				difference( this, oldValue, newValue );
 			} );
