@@ -249,6 +249,7 @@ class CorssWords {
 				const cell = input.parentElement;
 				const row = cell.parentElement;
 				var output = [];
+				newValue = newValue[ newValue.length - 2 ] + newValue[ newValue.length - 1 ];
 				for ( var i = 0; i < value2.length; i++ ) {
 					if ( value1[ i ] !== value2[ i ] ) {
 						output.push( value2[ i ] );
@@ -258,7 +259,7 @@ class CorssWords {
 					output = [ ...output[ output.length - 1 ] ];
 					newValue = output[ 0 ];
 				}
-				document.getElementById( 'console' ).innerText = output;
+				document.getElementById( 'console' ).innerText = newValue;
 				if ( output.length === 0 && newValue === '' ) {
 					backspace = true;
 				} else {
