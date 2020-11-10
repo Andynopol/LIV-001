@@ -262,7 +262,7 @@ class CorssWords {
 				// } else {
 
 				newValue = this.value;
-				if ( newValue.length > 1 ) {
+				if ( newValue.length >= 2 ) {
 					newValue = newValue[ newValue.length - 1 ];
 				}
 
