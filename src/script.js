@@ -14,6 +14,7 @@ class CorssWords {
 		this.setVerify();
 		this.setRetry();
 		this.atempts = 1;
+		this.matrice = [];
 		console.log( this.retry );
 	}
 
@@ -23,6 +24,7 @@ class CorssWords {
 		this.enableCells();
 		this.numberCells();
 		this.enableVerify();
+		this.vertical();
 	}
 
 	addRows() {
@@ -72,7 +74,7 @@ class CorssWords {
 			cell.appendChild( input );
 			row.appendChild( cell );
 		}
-
+		this.matrice.push( [ ...row.getElementsByClassName( 'cell' ) ] );
 	}
 
 	numberCells() {
@@ -162,6 +164,7 @@ class CorssWords {
 	enableInput( input ) {
 		const that = this;
 		if ( !MobileDetector.isMobile ) {
+			// Todo: Odata ce distribuitorii de android rezolva bug-ul cu codul tastei 229, generalizeaza aceasta ramura
 			input.addEventListener( "keydown", function ( ev ) {
 				const currentValue = this.value;
 				const cell = this.parentElement;
@@ -213,6 +216,7 @@ class CorssWords {
 			} );
 
 		} else {
+			// Todo: Odata ce distribuitorii de android rezolva bug-ul cu codul tastei 229, aceasta ramura se sterge
 			var oldValue;
 			var newValue;
 			var backspace = false;
@@ -323,6 +327,20 @@ class CorssWords {
 		}
 	}
 
+	vertical() {
+		if ( data.vertical ) {
+			for ( var i = 0; i < this.matrice.length; i++ ) {
+				const row = this.matrice[ i ];
+				for ( var j = 0; j < row.length; j++ ) {
+					const cell = row[ j ];
+					if ( data.vertical[ i ][ j ] ) {
+						cell.classList.add( 'vertical' );
+					}
+				}
+			}
+		}
+	}
+
 	setRetry() {
 		for ( var elem of this.controls ) {
 			if ( elem.getAttribute( 'id' ) === 'retry' ) {
@@ -369,3 +387,4 @@ class CorssWords {
 
 const crosswords = new CorssWords( data, root, controls );
 crosswords.generate();
+console.log( crosswords.matrice );
