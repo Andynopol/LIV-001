@@ -272,6 +272,7 @@ class CorssWords {
 
 			input.addEventListener( 'focus', function () {
 				oldValue = this.value;
+				this.value = this.value;
 			} );
 		}
 
