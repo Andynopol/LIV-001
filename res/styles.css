@@ -199,3 +199,12 @@ input.letter {
 	margin: 0 10px;
 	text-align: center;
 }
+
+#vertical{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transform: rotate(90deg);
+	width: 50px;
+	height: 50px;
+}
