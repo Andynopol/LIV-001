@@ -18,5 +18,9 @@
   "homepage": "https://github.com/Andynopol/LIV-001#readme",
   "devDependencies": {
     "prettier": "2.1.2"
+  },
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "uniq": "^1.0.1"
   }
 }
