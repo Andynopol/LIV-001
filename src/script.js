@@ -505,6 +505,11 @@ class CrossWrodsEditor
 
 	}
 
+	bindVertical(){
+		const vertical = this.controls.getElementById('vertical');
+		console.log(vertical);
+	}
+
 	start ()
 	{
 		// this is called to start the editing
@@ -514,6 +519,7 @@ class CrossWrodsEditor
 		this.bindAdd();
 		this.bindGenerate();
 		this.bindNumberOfAtempts();
+		this.bindVertical();
 	}
 }
 
