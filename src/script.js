@@ -242,7 +242,7 @@ class CorssWords {
 						input.value = '';
 					}
 				} else {
-					input.value = output[ output.length - 1 ];
+					input.value = output;
 					if ( input.value.match( /^[A-Za-z]+$/ ) ) {
 						if ( !that.isLastCell( row, cell ) ) {
 							that.focusNextInput( cell );
@@ -260,10 +260,10 @@ class CorssWords {
 				// if ( this.value.length !== 0 ) {
 				// 	newValue = this.value[ input.value.length - 1 ];
 				// } else {
-				if ( this.value.length !== 0 ) {
-					newValue = this.value[ this.value.length - 1 ];
-				} else {
-					newValue = this.value;
+
+				newValue = this.value;
+				if ( newValue.length > 1 ) {
+					newValue = newValue[ newValue.length - 1 ];
 				}
 
 				// }
