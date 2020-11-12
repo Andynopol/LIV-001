@@ -465,7 +465,7 @@ class CrossWrodsEditor {
 			const matrix = that.generateMatrix();
 			console.log(matrix);
 			const firstFromLeft = that.getFristCellFromLeft(matrix);
-			console.log(firstFromLeft);
+			
 		});
 	}
 
