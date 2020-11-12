@@ -57,6 +57,24 @@ class CrossWrodsEditor {
 			if (item.id === 'vertical') {
 				this.verticalSetter = item;
 			}
+			if (item.id === 'verticalLeft') {
+				this.vertLeft = item;
+			}
+			if (item.id === 'verticalRight') {
+				this.vertRight = item;
+			}
+		}
+	}
+
+	disableControls() {
+		for (var item of controls) {
+			item.classList.add('disabled');
+		}
+	}
+
+	hideControls() {
+		for (var item of controls) {
+			item.classList.add('invisible');
 		}
 	}
 
@@ -376,13 +394,6 @@ class CrossWrodsEditor {
 		for (var row of this.rows) {
 			const line = row.getElementsByClassName('line')[0];
 			const cells = [...line.getElementsByClassName('cell')];
-			// for(var i = 0; i<cells.length; i++){
-			// 	const cell = cells[i];
-			// 	const input = cell.getElementsByTagName('input')[0];
-			// 	if(input.value === ''){
-			// 		this.deleteCurrentCell(line, i+1);
-			// 	}
-			// }
 			const lastCell = cells[cells.length - 1];
 			const input = lastCell.getElementsByTagName('input')[0];
 			if (input.value === '') {
@@ -434,16 +445,15 @@ class CrossWrodsEditor {
 		var first;
 		for (var i = 0; i < matrix.length; i++) {
 			const line = matrix[i];
-			for(var j = 0; j<line.length; j++){
+			for (var j = 0; j < line.length; j++) {
 				const matrixCell = line[j];
-				if(matrixCell.classList.contains('cell')){
-					if(!first){
+				if (matrixCell.classList.contains('cell')) {
+					if (!first) {
 						first = [];
 						first.push(i);
 						first.push(j);
-					}
-					else{
-						if(j<first[1]){
+					} else {
+						if (j < first[1]) {
 							first[0] = i;
 							first[1] = j;
 						}
@@ -464,7 +474,11 @@ class CrossWrodsEditor {
 			const matrix = that.generateMatrix();
 			console.log(matrix);
 			const firstFromLeft = that.getFristCellFromLeft(matrix);
-			
+			console.log(firstFromLeft);
+			that.hideControls();
+			that.vertLeft.classList.remove('invisible');
+			that.vertRight.classList.remove('invisible');
+			that.vertRight.classList.add('disabled');
 		});
 	}
 
