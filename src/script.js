@@ -466,19 +466,62 @@ class CrossWrodsEditor {
 		return matrix[first[0]][first[1]];
 	}
 
+	getVerticalMatrix() {
+		const matrix = [];
+		for (var row of this.rows) {
+			const cells = [...row.getElementsByClassName('cell')];
+			const arr = [];
+			for (var cell of cells) {
+				arr.push(false);
+			}
+			matrix.push(arr);
+		}
+		return matrix;
+	}
+
+	getFristCellFromLeftCoords(cell) {
+		const coords = [];
+		const row = cell.parentElement.parentElement;
+		const cells = [...row.getElementsByClassName('cell')];
+		coords.push(this.rows.indexOf(row));
+		coords.push(cells.indexOf(cell));
+		return coords;
+	}
+
+	markVertical(coords) {
+		for (var i = 0; i < this.rows.length; i++) {
+			const cells = [...rows[i].getElementsByClassName('cell')];
+			for (var j = 0; j < cells.length; j++) {
+				if (this.vertical[i][j]) {
+					cells[i].classlist.add('vertical');
+				}
+			}
+		}
+	}
+
+	verticalLeftListener(btn, coords) {
+
+	}
+
 	bindVertical() {
 		const that = this;
 		this.verticalSetter.addEventListener('click', function () {
 			console.log('setting vertical');
 			that.deleteLastCells();
 			const matrix = that.generateMatrix();
-			console.log(matrix);
 			const firstFromLeft = that.getFristCellFromLeft(matrix);
+			const coords = that.getFristCellFromLeftCoords(firstFromLeft);
+			console.log(matrix);
 			console.log(firstFromLeft);
+			console.log(coords);
 			that.hideControls();
 			that.vertLeft.classList.remove('invisible');
 			that.vertRight.classList.remove('invisible');
-			that.vertRight.classList.add('disabled');
+			that.vertLeft.classList.add('disabled');
+			that.vertical = that.getVerticalMatrix();
+
+			that.vertical[coords[0]][coords[1]] = true;
+			console.log(that.vertical);
 		});
 	}
 
