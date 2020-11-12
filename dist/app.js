@@ -422,13 +422,39 @@ class CrossWrodsEditor {
 
 	}
 
-	generateMatrix(){
+	generateMatrix() {
 		const matrix = [];
-		for(var row of this.rows){
+		for (var row of this.rows) {
 			const arr = [...row.getElementsByClassName('blank')];
 			matrix.push(arr);
 		}
 		return matrix;
+	}
+
+	getFristCellFromLeft(matrix) {
+		var first;
+		for (var i = 0; i < matrix.length; i++) {
+			const line = matrix[i];
+			for(var j = 0; j<line.length; j++){
+				const matrixCell = line[j];
+				if(matrixCell.classList.contains('cell')){
+					if(!first){
+						first = [];
+						first.push(i);
+						first.push(j);
+					}
+					else{
+						if(j<first[1]){
+							first[0] = i;
+							first[1] = j;
+						}
+					}
+				}
+			}
+		}
+		console.log(matrix);
+		console.log(first);
+		return matrix[first[0]][first[1]];
 	}
 
 	bindVertical() {
@@ -438,6 +464,8 @@ class CrossWrodsEditor {
 			that.deleteLastCells();
 			const matrix = that.generateMatrix();
 			console.log(matrix);
+			const firstFromLeft = that.getFristCellFromLeft(matrix);
+			console.log(firstFromLeft);
 		});
 	}
 
