@@ -66,7 +66,7 @@ class CrossWrodsEditor
 			{
 				this.numOfAtempts = item;
 			}
-			if ( item.id === 'vertical' )
+			if ( item.id === 'start-vertical' )
 			{
 				this.verticalSetter = item;
 			}
@@ -77,6 +77,10 @@ class CrossWrodsEditor
 			if ( item.id === 'verticalRight' )
 			{
 				this.vertRight = item;
+			}
+			if ( item.id === 'vertical' )
+			{
+				this.generateVertical = item;
 			}
 		}
 	}
@@ -95,7 +99,7 @@ class CrossWrodsEditor
 		{
 			item.classList.add( 'invisible' );
 		}
-		this.add.parentElement.getElementsByTagName( 'label' )[ 0 ].classList.add( 'invisible' );
+		document.getElementById( 'controls' ).getElementsByTagName( 'label' )[ 0 ].classList.remove( 'invisible' );
 	}
 
 	sudoHideControls ()
@@ -109,6 +113,46 @@ class CrossWrodsEditor
 				if ( elem.classList.contains( 'delete' ) || elem.classList.contains( 'positioner' ) )
 				{
 					elem.classList.add( 'invisible' );
+				}
+			}
+		}
+	}
+
+	showAllControls ()
+	{
+		for ( var item of this.controls )
+		{
+			item.classList.remove( 'invisible' );
+		}
+		document.getElementById( 'controls' ).getElementsByTagName( 'label' )[ 0 ].classList.remove( 'invisible' );
+	}
+
+	showNonVerticalControls ()
+	{
+		this.showAllControls();
+		this.vertLeft.classList.add( 'invisible' );
+		this.vertRight.classList.add( 'invisible' );
+		this.generateVertical.classList.add( 'invisible' );
+	}
+
+	sudoShowControls ( all )
+	{
+		if ( all )
+		{
+			this.showAllControls();
+		}
+		else
+		{
+			this.showNonVerticalControls();
+		}
+		for ( var row of this.rows )
+		{
+			const elems = row.getElementsByTagName( 'div' );
+			for ( var elem of elems )
+			{
+				if ( elem.classList.contains( 'delete' ) || elem.classList.contains( 'positioner' ) )
+				{
+					elem.classList.remove( 'invisible' );
 				}
 			}
 		}
@@ -644,20 +688,26 @@ class CrossWrodsEditor
 		return coords;
 	}
 
-	buildVerticalMatrix ( coords )
+	buildVerticalMatrix ()
 	{
-		console.log( coords );
-		for ( var i = 0; i < this.vertical.length; i++ )
+		this.vertical = [];
+		for ( var i = 0; i < this.rows.length; i++ )
 		{
-			console.log( this.vertical[ i ].length );
-			for ( var j = 0; j < this.vertical[ i ].length; j++ )
+			const arr = [];
+			const cells = [ ...this.rows[ i ].getElementsByClassName( 'cell' ) ];
+			for ( var j = 0; j < cells.length; j++ )
 			{
-				this.vertical[ i ][ j ] = false;
-				if ( j === coords[ 1 ] )
+				const cell = cells[ j ];
+				if ( cell.classList.contains( 'vertical' ) )
 				{
-					this.vertical[ i ][ j ] = true;
+					arr.push( true );
+				} else
+				{
+					arr.push( false );
 				}
+
 			}
+			this.vertical.push( arr );
 		}
 		console.log( this.vertical );
 	}
@@ -736,6 +786,7 @@ class CrossWrodsEditor
 			console.log( coordsLast );
 			that.sudoHideControls();
 			that.vertLeft.classList.remove( 'invisible' );
+			that.generateVertical.classList.remove( 'invisible' );
 			that.vertRight.classList.remove( 'invisible' );
 			that.vertLeft.classList.add( 'disabled' );
 			that.vertical = that.getVerticalMatrix();
@@ -747,7 +798,12 @@ class CrossWrodsEditor
 			{
 				that.verticalMover( this, coords, first, last );
 			} );
-			// that.updateMatrix( coordsFirst );
+			that.generateVertical.addEventListener( 'click', function ()
+			{
+				that.buildVerticalMatrix();
+				that.hideControls();
+				that.sudoShowControls( false );
+			} );
 			that.markVertical( coordsFirst );
 		} );
 	}

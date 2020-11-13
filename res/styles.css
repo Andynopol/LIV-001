@@ -199,7 +199,7 @@ input.letter {
 	text-align: center;
 }
 
-#vertical {
+#start-vertical {
 	display: flex;
 	justify-content: center;
 	align-items: center;
