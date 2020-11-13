@@ -4,7 +4,7 @@ const root = document.getElementById( 'root' );
 const controls = [ ...document.getElementById( 'controls' ).getElementsByTagName( 'button' ) ];
 
 class CorssWords {
-	constructor( data, root, controls ) {
+	constructor ( data, root, controls ) {
 		this.data = data;
 		this.root = root;
 		this.rows = null;
@@ -18,7 +18,7 @@ class CorssWords {
 		console.log( this.retry );
 	}
 
-	generate() {
+	generate () {
 		this.addRows();
 		this.addWords();
 		this.enableCells();
@@ -27,8 +27,9 @@ class CorssWords {
 		this.vertical();
 	}
 
-	addRows() {
-		for ( var i = 0; i < this.data.rows; i++ ) {
+	addRows () {
+		for ( var i = 0; i < this.data.rows; i++ )
+		{
 			const row = document.createElement( 'div' );
 			row.classList.add( 'row' );
 			this.root.appendChild( row );
@@ -36,10 +37,11 @@ class CorssWords {
 		this.rows = [ ...this.root.getElementsByClassName( 'row' ) ];
 	}
 
-	addWords() {
+	addWords () {
 		const words = this.data.words;
 
-		for ( let i = 0; i < words.length; i++ ) {
+		for ( let i = 0; i < words.length; i++ )
+		{
 			const word = words[ i ];
 			const row = this.rows[ i ];
 			this.addBlanks( word, row );
@@ -47,21 +49,24 @@ class CorssWords {
 		}
 	}
 
-	addBlanks( word, row ) {
-		const blanks = word.blanks
-		for ( var i = 0; i < blanks; i++ ) {
+	addBlanks ( word, row ) {
+		const blanks = word.blanks;
+		for ( var i = 0; i < blanks; i++ )
+		{
 			const blank = document.createElement( 'div' );
 			blank.classList.add( 'blank' );
 			row.appendChild( blank );
-			if ( i === blanks - 1 ) {
+			if ( i === blanks - 1 )
+			{
 				blank.style.borderRight = 'none';
 			}
 		}
 	}
 
-	addCells( word, row ) {
+	addCells ( word, row ) {
 		const letters = [ ...word.word ];
-		for ( var i = 0; i < letters.length; i++ ) {
+		for ( var i = 0; i < letters.length; i++ )
+		{
 			const letter = letters[ i ];
 			const cell = document.createElement( 'div' );
 			const input = document.createElement( 'input' );
@@ -77,8 +82,9 @@ class CorssWords {
 		this.matrice.push( [ ...row.getElementsByClassName( 'cell' ) ] );
 	}
 
-	numberCells() {
-		for ( var row of this.rows ) {
+	numberCells () {
+		for ( var row of this.rows )
+		{
 			const firstCell = row.getElementsByClassName( 'cell' )[ 0 ];
 			const num = document.createElement( 'div' );
 			num.classList.add( 'row-number' );
@@ -87,23 +93,25 @@ class CorssWords {
 		}
 	}
 
-	isLastCell( row, cell ) {
+	isLastCell ( row, cell ) {
 		const lastCell = row.querySelector( ".cell:last-child" );
-		if ( lastCell === cell ) {
+		if ( lastCell === cell )
+		{
 			return true;
 		}
 		return false;
 	}
 
-	isFirstCell( row, cell ) {
+	isFirstCell ( row, cell ) {
 		const firstCell = row.getElementsByClassName( "cell" )[ 0 ];
-		if ( firstCell === cell ) {
+		if ( firstCell === cell )
+		{
 			return true;
 		}
 		return false;
 	}
 
-	focusFirstInput( row ) {
+	focusFirstInput ( row ) {
 		const firstCell = row.getElementsByClassName( 'cell' )[ 0 ];
 		const input = firstCell.querySelector(
 			".letter:first-child",
@@ -111,7 +119,7 @@ class CorssWords {
 		input.focus();
 	}
 
-	focusNextInput( cell ) {
+	focusNextInput ( cell ) {
 		const row = cell.parentElement;
 		const cells = [ ...row.getElementsByClassName( "cell" ) ];
 		const nextCellInput = cells[ cells.indexOf( cell ) + 1 ].querySelector(
@@ -120,7 +128,7 @@ class CorssWords {
 		nextCellInput.focus();
 	}
 
-	focusPrevInput( cell ) {
+	focusPrevInput ( cell ) {
 		const row = cell.parentElement;
 		const cells = [ ...row.getElementsByClassName( "cell" ) ];
 		const prevCellInput = cells[ cells.indexOf( cell ) - 1 ].querySelector(
@@ -129,41 +137,46 @@ class CorssWords {
 		prevCellInput.focus();
 	}
 
-	focusNextRow( row ) {
+	focusNextRow ( row ) {
 		console.log( row );
-		if ( this.rows[ this.rows.indexOf( row ) ] === this.rows[ this.rows.length - 1 ] ) {
+		if ( this.rows[ this.rows.indexOf( row ) ] === this.rows[ this.rows.length - 1 ] )
+		{
 			return;
-		} else {
+		} else
+		{
 			const nextRow = this.rows[ this.rows.indexOf( row ) + 1 ];
 			console.log( nextRow );
 			this.focusFirstInput( nextRow );
 		}
 	}
 
-	enableCells() {
-		for ( var i = 0; i < this.rows.length; i++ ) {
+	enableCells () {
+		for ( var i = 0; i < this.rows.length; i++ )
+		{
 			const row = this.rows[ i ];
 			this.enableCellsOnCurrentRow( row );
 		}
 	}
 
-	enableCellsOnCurrentRow( row ) {
+	enableCellsOnCurrentRow ( row ) {
 		const cells = row.getElementsByClassName( 'cell' );
-		for ( var i = 0; i < cells.length; i++ ) {
+		for ( var i = 0; i < cells.length; i++ )
+		{
 			const cell = cells[ i ];
 			this.enableCurrentCell( cell );
 		}
 	}
 
-	enableCurrentCell( cell ) {
+	enableCurrentCell ( cell ) {
 		console.log( cell );
 		const input = cell.firstChild;
 		this.enableInput( input );
 	}
 
-	enableInput( input ) {
+	enableInput ( input ) {
 		const that = this;
-		if ( !MobileDetector.isMobile ) {
+		if ( !MobileDetector.isMobile )
+		{
 			// Todo: Odata ce distribuitorii de android rezolva bug-ul cu codul tastei 229, generalizeaza aceasta ramura
 			input.addEventListener( "keydown", function ( ev ) {
 				const currentValue = this.value;
@@ -171,21 +184,28 @@ class CorssWords {
 				const row = cell.parentElement;
 				var key = ev.keyCode;
 
-				if ( key === 13 ) {
+				if ( key === 13 )
+				{
 					ev.preventDefault();
 					that.focusNextRow( this.parentElement.parentElement );
-				} else {
+				} else
+				{
 					this.value = "";
 				}
 
-				if ( key === 8 ) {
+				if ( key === 8 )
+				{
 					ev.preventDefault();
-					if ( that.isFirstCell( row, cell ) ) {
+					if ( that.isFirstCell( row, cell ) )
+					{
 						this.value = '';
-					} else {
-						if ( currentValue === '' ) {
+					} else
+					{
+						if ( currentValue === '' )
+						{
 							that.focusPrevInput( cell );
-						} else {
+						} else
+						{
 							this.value = '';
 						}
 					}
@@ -196,26 +216,34 @@ class CorssWords {
 				const cell = this.parentElement;
 				const row = cell.parentElement;
 				var key = ev.keyCode;
-				if ( ( key >= 65 && key <= 90 ) || key == 32 ) {
-					if ( that.isLastCell( row, cell ) ) {
+				if ( ( key >= 65 && key <= 90 ) || key == 32 )
+				{
+					if ( that.isLastCell( row, cell ) )
+					{
 
-					} else {
-						if ( this.value !== '' ) {
+					} else
+					{
+						if ( this.value !== '' )
+						{
 							that.focusNextInput( cell );
 						}
 
 					}
-				} else if ( key === 13 ) {
+				} else if ( key === 13 )
+				{
 					ev.preventDefault();
 					this.value = this.value;
-				} else if ( ev.keyCode === 8 ) {
+				} else if ( ev.keyCode === 8 )
+				{
 					ev.preventDefault();
-				} else {
+				} else
+				{
 					ev.preventDefault();
 				}
 			} );
 
-		} else {
+		} else
+		{
 			// Todo: Odata ce distribuitorii de android rezolva bug-ul cu codul tastei 229, aceasta ramura se sterge
 			var oldValue;
 			var newValue;
@@ -224,27 +252,37 @@ class CorssWords {
 				const cell = input.parentElement;
 				const row = cell.parentElement;
 				var output = [];
-				for ( var i = 0; i < value2.length; i++ ) {
-					if ( value1[ i ] !== value2[ i ] ) {
+				for ( var i = 0; i < value2.length; i++ )
+				{
+					if ( value1[ i ] !== value2[ i ] )
+					{
 						output.push( value2[ i ] );
 					}
 				}
 				document.getElementById( 'console' ).innerText = value2;
-				if ( output.length === 0 && newValue === '' ) {
+				if ( output.length === 0 && newValue === '' )
+				{
 					backspace = true;
-				} else {
+				} else
+				{
 					backspace = false;
 				}
-				if ( backspace ) {
-					if ( value1 === '' && !that.isFirstCell( row, cell ) ) {
+				if ( backspace )
+				{
+					if ( value1 === '' && !that.isFirstCell( row, cell ) )
+					{
 						that.focusPrevInput( cell );
-					} else {
+					} else
+					{
 						input.value = '';
 					}
-				} else {
+				} else
+				{
 					input.value = output;
-					if ( input.value.match( /^[A-Za-z]+$/ ) ) {
-						if ( !that.isLastCell( row, cell ) ) {
+					if ( input.value.match( /^[A-Za-z]+$/ ) )
+					{
+						if ( !that.isLastCell( row, cell ) )
+						{
 							that.focusNextInput( cell );
 						}
 					}
@@ -258,7 +296,8 @@ class CorssWords {
 
 			input.addEventListener( 'keyup', function () {
 				newValue = this.value;
-				if ( newValue.length >= 2 ) {
+				if ( newValue.length >= 2 )
+				{
 					newValue = newValue[ newValue.length - 1 ];
 				}
 				difference( this, oldValue, newValue );
@@ -274,66 +313,82 @@ class CorssWords {
 
 	}
 
-	setVerify() {
-		for ( var elem of this.controls ) {
-			if ( elem.getAttribute( 'id' ) === 'verify' ) {
+	setVerify () {
+		for ( var elem of this.controls )
+		{
+			if ( elem.getAttribute( 'id' ) === 'verify' )
+			{
 				this.verify = elem;
 			}
 		}
 	}
 
-	enableVerify() {
+	enableVerify () {
 		const that = this;
 		this.verify.addEventListener( 'click', function () {
 			that.verifyAll();
 		} );
 	}
 
-	verifyAll() {
+	verifyAll () {
 		this.enableRetry();
 		this.verify.classList.add( 'invisible' );
-		for ( var row of this.rows ) {
+		for ( var row of this.rows )
+		{
 			this.verifyRow( row, this.data.words[ this.rows.indexOf( row ) ].word );
 		}
 	}
 
-	verifyRow( row, word ) {
+	verifyRow ( row, word ) {
 		const cells = [ ...row.getElementsByClassName( 'cell' ) ];
 		var correct = true;
 		console.log( word );
 		const letters = [ ...word ];
-		for ( var cell of cells ) {
-			if ( !this.verifyCell( cell, letters[ cells.indexOf( cell ) ] ) ) {
+		for ( var cell of cells )
+		{
+			if ( !this.verifyCell( cell, letters[ cells.indexOf( cell ) ] ) )
+			{
 				correct = false;
-				break;
 			}
 		}
 
-		if ( correct ) {
+		if ( correct )
+		{
 			row.classList.add( 'verified', 'correct' );
-		} else {
+		} else
+		{
 			row.classList.add( 'verified', 'incorrect' );
 		}
 	}
 
-	verifyCell( cell, letter ) {
+	verifyCell ( cell, letter ) {
 		const input = cell.querySelector( '.letter:first-child' );
 		input.setAttribute( 'readonly', '' );
 		input.classList.add( 'petrified' );
-		if ( input.value === letter ) {
+		if ( input.value === letter )
+		{
+			if ( cell.classList.contains( 'vertical' ) )
+			{
+				cell.classList.add( 'vertical-correct' );
+			}
 			return true;
-		} else {
+		} else
+		{
 			return false;
 		}
 	}
 
-	vertical() {
-		if ( data.vertical ) {
-			for ( var i = 0; i < this.matrice.length; i++ ) {
+	vertical () {
+		if ( data.vertical )
+		{
+			for ( var i = 0; i < this.matrice.length; i++ )
+			{
 				const row = this.matrice[ i ];
-				for ( var j = 0; j < row.length; j++ ) {
+				for ( var j = 0; j < row.length; j++ )
+				{
 					const cell = row[ j ];
-					if ( data.vertical[ i ][ j ] ) {
+					if ( data.vertical[ i ][ j ] )
+					{
 						cell.classList.add( 'vertical' );
 					}
 				}
@@ -341,18 +396,20 @@ class CorssWords {
 		}
 	}
 
-	setRetry() {
-		for ( var elem of this.controls ) {
-			if ( elem.getAttribute( 'id' ) === 'retry' ) {
+	setRetry () {
+		for ( var elem of this.controls )
+		{
+			if ( elem.getAttribute( 'id' ) === 'retry' )
+			{
 				this.retry = elem;
 			}
 		}
 	}
 
-	enableRetry() {
+	enableRetry () {
 		const that = this;
 		this.retry.classList.remove( 'invisible' );
-		this.retry.addEventListener( 'click', function handler() {
+		this.retry.addEventListener( 'click', function handler () {
 			console.log( 'reset' );
 			that.reset( that );
 			this.removeEventListener( 'click', handler );
@@ -360,22 +417,26 @@ class CorssWords {
 		} );
 	}
 
-	reset() {
+	reset () {
 		console.log( 'reset' );
-		if ( this.atempts < this.data.numOfAtemps ) {
+		if ( this.atempts < this.data.numOfAtemps )
+		{
 			console.log( 'reste' );
 			this.atempts++;
-			for ( var row of this.rows ) {
+			for ( var row of this.rows )
+			{
 				row.classList.remove( 'correct', 'incorrect', 'verified' );
 				const cells = row.getElementsByClassName( 'cell' );
-				for ( var cell of cells ) {
+				for ( var cell of cells )
+				{
 					const input = cell.querySelector( '.letter:first-child' );
 					input.classList.remove( 'petrified' );
 					input.value = '';
 					input.removeAttribute( 'readonly', '' );
 				}
 			}
-			if ( this.atempts === this.data.numOfAtemps ) {
+			if ( this.atempts === this.data.numOfAtemps )
+			{
 				this.retry.style.visibility = 'hidden';
 			}
 			this.verify.classList.remove( 'invisible' );

@@ -1,12 +1,3 @@
-const vertical = [
-    [ false, false, false, false, false, false, true, false, false, false, false, false ],
-    [ false, false, false, true, false, false ],
-    [ false, false, false, true, false ],
-    [ false, false, false, false, true ],
-    [ false, false, false, false, true, false, false ],
-];
-
-
-const data = { "words": [ { "word": "retrogradare", "blanks": 0 }, { "word": "accept", "blanks": 3 }, { "word": "ceata", "blanks": 3 }, { "word": "munte", "blanks": 2 }, { "word": "capcana", "blanks": 2 } ], "rows": 5, "vertical": vertical, "numOfAtemps": 5 };
+const data = { "words": [ { "word": "torace", "blanks": 2 }, { "word": "abdomen", "blanks": 3 }, { "word": "calciu", "blanks": 4 }, { "word": "vertebate", "blanks": 5 }, { "word": "concomitent", "blanks": 3 }, { "word": "termistor", "blanks": 0 }, { "word": "itineariu", "blanks": 4 }, { "word": "convergent", "blanks": 3 } ], "rows": 8, "vertical": [ [ false, false, false, false, true, false ], [ false, false, false, true, false, false, false ], [ false, false, true, false, false, false ], [ false, true, false, false, false, false, false, false, false ], [ false, false, false, true, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, true, false, false ], [ false, false, true, false, false, false, false, false, false ], [ false, false, false, true, false, false, false, false, false, false ] ], "numOfAtemps": 1 };
 
 module.exports = data;

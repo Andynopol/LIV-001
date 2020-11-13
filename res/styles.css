@@ -224,3 +224,7 @@ input.letter {
 .vertical{
 	background-color: greenyellow;
 }
+
+.vertical-correct{
+	background-color: green !important;
+}
