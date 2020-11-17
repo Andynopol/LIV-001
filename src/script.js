@@ -38,7 +38,8 @@ class CrossWrodsEditor
 		this.generate = null;
 		this.numOfAtempts = null;
 		this.atempts = 1;
-		this.vertical = false;
+		this.vertical = null;
+		this.coords = null;
 		this.updateRows();
 		this.setControls();
 		this.data = {};
@@ -729,21 +730,8 @@ class CrossWrodsEditor
 		}
 	}
 
-	verticalMover ( btn, coords, first, last )
+	verifyCoordsForFirstAndLast ( coords, first, last )
 	{
-
-		if ( btn === this.vertLeft )
-		{
-			coords[ 1 ]--;
-
-		}
-		else if ( btn === this.vertRight )
-		{
-			coords[ 1 ]++;
-		}
-		console.log( coords );
-		console.log( first );
-		console.log( last );
 		if ( coords[ 1 ] === last )
 		{
 			this.vertRight.classList.add( 'disabled' );
@@ -760,51 +748,90 @@ class CrossWrodsEditor
 		{
 			this.vertRight.classList.remove( 'disabled' );
 		}
-		this.markVertical( coords );
+	}
+
+	verticalMover ( btn, coords, first, last )
+	{
+
+		if ( btn === this.vertLeft )
+		{
+			coords[ 1 ]--;
+
+		}
+		else if ( btn === this.vertRight )
+		{
+			coords[ 1 ]++;
+		}
+		this.verifyCoordsForFirstAndLast( coords, first, last );
+		this.markVertical( coords, first, last );
+		this.coords = coords;
+	}
+
+	resetVerticalControls ()
+	{
+
+	}
+
+	bindVerticalControls ()
+	{
+		const first = this.coordsFirst[ 1 ];
+		const last = this.coordsLast[ 1 ];
+		const that = this;
+		const handlerLeft = function ()
+		{
+			that.verticalMover( that.vertLeft, that.coords, first, last );
+		};
+		const handlerRight = function ()
+		{
+			that.verticalMover( that.vertRight, that.coords, first, last );
+		};
+		this.vertLeft.addEventListener( 'click', handlerLeft );
+		this.vertRight.addEventListener( 'click', handlerRight );
+		this.generateVertical.addEventListener( 'click', function handler ()
+		{
+			that.buildVerticalMatrix();
+			that.hideControls();
+			that.sudoShowControls( false );
+			that.vertLeft.removeEventListener( 'click', handlerLeft );
+			that.vertRight.removeEventListener( 'click', handlerRight );
+			this.removeEventListener( 'click', handler );
+		} );
 	}
 
 	bindVertical ()
 	{
 		const that = this;
+
 		this.verticalSetter.addEventListener( 'click', function ()
 		{
-			console.log( 'setting vertical' );
 			that.deleteLastCells();
 			const matrix = that.generateMatrix();
 			const firstFromLeft = that.getFristCellFromLeft( matrix );
 			const lastFromLeft = that.getLastCellFromLeft( matrix );
-			const coordsFirst = that.getVerticalCellCoords( firstFromLeft );
-			const coordsLast = that.getVerticalCellCoords( lastFromLeft );
-			const first = coordsFirst[ 1 ];
-			const last = coordsLast[ 1 ];
-			const coords = [ ...coordsFirst ];
-			console.log( matrix );
-			console.log( firstFromLeft );
-			console.log( lastFromLeft );
-			console.log( coordsFirst );
-			console.log( coordsLast );
+			that.coordsFirst = that.getVerticalCellCoords( firstFromLeft );
+			that.coordsLast = that.getVerticalCellCoords( lastFromLeft );
+			const first = that.coordsFirst[ 1 ];
+			const last = that.coordsLast[ 1 ];
+			var coords;
+			if ( that.coords )
+			{
+				coords = that.coords;
+			}
+			else
+			{
+				coords = that.coordsFirst;
+				that.coords = coords;
+			}
 			that.sudoHideControls();
 			that.vertLeft.classList.remove( 'invisible' );
 			that.generateVertical.classList.remove( 'invisible' );
 			that.vertRight.classList.remove( 'invisible' );
-			that.vertLeft.classList.add( 'disabled' );
+			that.verifyCoordsForFirstAndLast( coords, first, last );
 			that.vertical = that.getVerticalMatrix();
-			that.vertLeft.addEventListener( 'click', function ()
-			{
-				that.verticalMover( this, coords, first, last );
-			} );
-			that.vertRight.addEventListener( 'click', function ()
-			{
-				that.verticalMover( this, coords, first, last );
-			} );
-			that.generateVertical.addEventListener( 'click', function ()
-			{
-				that.buildVerticalMatrix();
-				that.hideControls();
-				that.sudoShowControls( false );
-			} );
-			that.markVertical( coordsFirst );
+			that.bindVerticalControls();
+			that.markVertical( coords );
 		} );
+
 	}
 
 	start ()
