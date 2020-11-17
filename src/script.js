@@ -448,4 +448,3 @@ class CorssWords {
 
 const crosswords = new CorssWords( data, root, controls );
 crosswords.generate();
-console.log( crosswords.matrice );
