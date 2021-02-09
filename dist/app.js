@@ -27,7 +27,7 @@ Object.defineProperties( MobileDetector, {
 
 module.exports = MobileDetector;
 },{}],3:[function(require,module,exports){
-const data = require( './data' );
+const data = require( '../data' );
 const MobileDetector = require( './mobile' );
 const root = document.getElementById( 'root' );
 const controls = [ ...document.getElementById( 'controls' ).getElementsByTagName( 'button' ) ];
@@ -477,5 +477,4 @@ class CorssWords {
 
 const crosswords = new CorssWords( data, root, controls );
 crosswords.generate();
-console.log( crosswords.matrice );
-},{"./data":1,"./mobile":2}]},{},[1,2,3]);
+},{"../data":1,"./mobile":2}]},{},[2,3]);

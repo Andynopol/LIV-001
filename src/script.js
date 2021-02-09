@@ -1,4 +1,4 @@
-const data = require( './data' );
+const data = require( '../data' );
 const MobileDetector = require( './mobile' );
 const root = document.getElementById( 'root' );
 const controls = [ ...document.getElementById( 'controls' ).getElementsByTagName( 'button' ) ];
